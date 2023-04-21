@@ -61,6 +61,20 @@ exports.defaultEditorConfig = {
         (0, TableOfContentsFeature_1.TableOfContentsFeature)({ enabled: false }),
     ],
     toggles: {
+        blocks: [
+            'bullet',
+            'check',
+            'code',
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'number',
+            'paragraph',
+            'quote',
+        ],
         comments: {
             enabled: true,
         },

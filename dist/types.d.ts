@@ -37,6 +37,7 @@ export type Feature = {
     embedConfigs?: PlaygroundEmbedConfig[];
     actions?: JSX.Element[];
 };
+export type BlockKey = 'bullet' | 'check' | 'code' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'number' | 'paragraph' | 'quote';
 export type EditorConfig = {
     debug: boolean;
     features: Feature[];
@@ -49,6 +50,7 @@ export type EditorConfig = {
         };
     };
     toggles: {
+        blocks: BlockKey[];
         comments: {
             enabled: boolean;
         };
