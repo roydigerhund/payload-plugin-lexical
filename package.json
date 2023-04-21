@@ -15,15 +15,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prettier:fix": "prettier --write ."
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/AlessioGr/payload-plugin-lexical"
-  },
   "author": "Alessio Gravili",
   "bugs": {
     "url": "https://github.com/AlessioGr/payload-plugin-lexical/issues"
   },
-  "homepage": "https://github.com/AlessioGr/payload-plugin-lexical",
   "keywords": [
     "payload",
     "cms",
