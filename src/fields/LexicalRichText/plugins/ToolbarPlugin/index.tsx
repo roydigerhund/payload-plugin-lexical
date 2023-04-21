@@ -307,10 +307,10 @@ function BlockFormatDropDown({
           <span className="text">Heading 5</span>
         </DropDownItem>
       )}
-      {editorConfig.toggles.blocks.includes('h5') && (
+      {editorConfig.toggles.blocks.includes('h6') && (
         <DropDownItem
-          className={`item ${dropDownActiveClass(blockType === 'h5')}`}
-          onClick={() => formatHeading('h5')}>
+          className={`item ${dropDownActiveClass(blockType === 'h6')}`}
+          onClick={() => formatHeading('h6')}>
           <i className="icon h5" />
           <span className="text">Heading 6</span>
         </DropDownItem>
