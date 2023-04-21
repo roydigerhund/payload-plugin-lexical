@@ -265,12 +265,12 @@ function BlockFormatDropDown({
         <i className="icon paragraph" />
         <span className="text">Normal</span>
       </DropDownItem>
-      <DropDownItem
+      {/* <DropDownItem
         className={`item ${dropDownActiveClass(blockType === 'h1')}`}
         onClick={() => formatHeading('h1')}>
         <i className="icon h1" />
         <span className="text">Heading 1</span>
-      </DropDownItem>
+      </DropDownItem> */}
       <DropDownItem
         className={`item ${dropDownActiveClass(blockType === 'h2')}`}
         onClick={() => formatHeading('h2')}>
@@ -282,6 +282,18 @@ function BlockFormatDropDown({
         onClick={() => formatHeading('h3')}>
         <i className="icon h3" />
         <span className="text">Heading 3</span>
+      </DropDownItem>
+      <DropDownItem
+        className={`item ${dropDownActiveClass(blockType === 'h4')}`}
+        onClick={() => formatHeading('h4')}>
+        <i className="icon h4" />
+        <span className="text">Heading 4</span>
+      </DropDownItem>
+      <DropDownItem
+        className={`item ${dropDownActiveClass(blockType === 'h5')}`}
+        onClick={() => formatHeading('h5')}>
+        <i className="icon h5" />
+        <span className="text">Heading 5</span>
       </DropDownItem>
       <DropDownItem
         className={`item ${dropDownActiveClass(blockType === 'bullet')}`}
