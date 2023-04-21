@@ -311,7 +311,7 @@ function BlockFormatDropDown({
         <DropDownItem
           className={`item ${dropDownActiveClass(blockType === 'h6')}`}
           onClick={() => formatHeading('h6')}>
-          <i className="icon h5" />
+          <i className="icon h6" />
           <span className="text">Heading 6</span>
         </DropDownItem>
       )}
