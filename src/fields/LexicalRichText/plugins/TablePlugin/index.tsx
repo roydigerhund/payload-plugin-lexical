@@ -205,7 +205,7 @@ export function InsertNewTableDialog({}: {}): JSX.Element {
       slug={newTableDrawerSlug}
       key={newTableDrawerSlug}
       className={baseClass}
-      title="Add new table (Experimental)">
+      title="Add new table">
       <React.Fragment>
         <TextInput
           placeholder={'# of rows (1-500)'}
@@ -214,6 +214,7 @@ export function InsertNewTableDialog({}: {}): JSX.Element {
           value={rows}
           data-test-id="table-modal-rows"
           type="number"
+          defaultValue="3"
         />
         <TextInput
           placeholder={'# of columns (1-50)'}
@@ -222,6 +223,7 @@ export function InsertNewTableDialog({}: {}): JSX.Element {
           value={columns}
           data-test-id="table-modal-columns"
           type="number"
+          defaultValue="3"
         />
         <DialogActions data-test-id="table-modal-confirm-insert">
           <Button disabled={isDisabled} onClick={onClick}>
