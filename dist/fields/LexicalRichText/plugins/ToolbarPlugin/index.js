@@ -543,17 +543,10 @@ function ToolbarPlugin(props) {
                     React.createElement("span", { className: "text" }, "Upload"))),
                 editorConfig.toggles.tables.enabled &&
                     editorConfig.toggles.tables.display && (React.createElement(DropDown_1.DropDownItem, { onClick: () => {
-                        editor.dispatchCommand(ModalPlugin_1.OPEN_MODAL_COMMAND, 'table');
-                    }, className: "item" },
-                    React.createElement("i", { className: "icon table" }),
-                    React.createElement("span", { className: "text" }, "Table"))) //TODO: Replace this with experimental table once not experimental anymore. Might be worth the wait as it's better, and its data structure is different */
-            ,
-                editorConfig.toggles.tables.enabled &&
-                    editorConfig.toggles.tables.display && (React.createElement(DropDown_1.DropDownItem, { onClick: () => {
                         editor.dispatchCommand(ModalPlugin_1.OPEN_MODAL_COMMAND, 'newtable');
                     }, className: "item" },
                     React.createElement("i", { className: "icon table" }),
-                    React.createElement("span", { className: "text" }, "Table (Experimental)"))),
+                    React.createElement("span", { className: "text" }, "Table"))),
                 (0, AutoEmbedPlugin_1.getEmbedConfigs)(editorConfig).map((embedConfig) => (React.createElement(DropDown_1.DropDownItem, { key: embedConfig.type, onClick: () => {
                         activeEditor.dispatchCommand(LexicalAutoEmbedPlugin_1.INSERT_EMBED_COMMAND, embedConfig.type);
                     }, className: "item" },
