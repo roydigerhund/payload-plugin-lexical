@@ -33,9 +33,10 @@ function UploadPlugin({ captionsEnabled, }) {
                 }, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.showCaption, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.caption, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.captionsEnabled);
                 const selection = (0, lexical_1.$getSelection)();
                 const node = selection === null || selection === void 0 ? void 0 : selection.getNodes()[0];
-                if (node && (0, lexical_1.$isParagraphNode)(node) && !((_a = node === null || node === void 0 ? void 0 : node.children) === null || _a === void 0 ? void 0 : _a.length)) {
+                const parent = node === null || node === void 0 ? void 0 : node.getParent();
+                if (node && (0, lexical_1.$isParagraphNode)(node) && !((_a = node === null || node === void 0 ? void 0 : node.children) === null || _a === void 0 ? void 0 : _a.length) && parent && (0, lexical_1.$isRootOrShadowRoot)(parent)) {
                     node.replace(imageNode);
-                    node.insertAfter((0, lexical_1.$createParagraphNode)());
+                    imageNode.insertAfter((0, lexical_1.$createParagraphNode)());
                 }
                 else {
                     (0, utils_1.$insertNodeToNearestRoot)(imageNode);

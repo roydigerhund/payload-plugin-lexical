@@ -84,9 +84,10 @@ export default function UploadPlugin({
             );
             const selection = $getSelection();
             const node = selection?.getNodes()[0];
-            if (node && $isParagraphNode(node) && !node?.children?.length) {
+            const parent = node?.getParent();
+            if (node && $isParagraphNode(node) && !node?.children?.length && parent && $isRootOrShadowRoot(parent)) {
               node.replace(imageNode);
-              node.insertAfter($createParagraphNode());
+              imageNode.insertAfter($createParagraphNode());
             } else {
               $insertNodeToNearestRoot(imageNode);
             }
