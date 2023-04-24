@@ -6,7 +6,11 @@
  *
  */
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { $wrapNodeInElement, mergeRegister } from '@lexical/utils';
+import {
+  $wrapNodeInElement,
+  mergeRegister,
+  $insertNodeToNearestRoot,
+} from '@lexical/utils';
 import {
   $createParagraphNode,
   $createRangeSelection,
@@ -76,10 +80,7 @@ export default function UploadPlugin({
               insertImagePayload?.caption,
               insertImagePayload?.captionsEnabled,
             );
-            $insertNodes([imageNode]);
-            if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
-              $wrapNodeInElement(imageNode, $createParagraphNode).selectEnd();
-            }
+            $insertNodeToNearestRoot(imageNode);
           });
 
           /*const relatedCollection = collections.find((coll) => {
