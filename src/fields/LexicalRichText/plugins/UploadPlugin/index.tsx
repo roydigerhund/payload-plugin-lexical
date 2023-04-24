@@ -18,6 +18,7 @@ import {
   $insertNodes,
   $isNodeSelection,
   $isRootOrShadowRoot,
+  $isTextNode,
   $setSelection,
   COMMAND_PRIORITY_EDITOR,
   COMMAND_PRIORITY_HIGH,
@@ -80,7 +81,14 @@ export default function UploadPlugin({
               insertImagePayload?.caption,
               insertImagePayload?.captionsEnabled,
             );
-            $insertNodeToNearestRoot(imageNode);
+            const selection = $getSelection();
+            const node = selection?.getNodes()[0];
+            if (node && $isTextNode(node) && !$isRootOrShadowRoot(node)) {
+              node.replace(imageNode);
+              node.insertAfter($createParagraphNode());
+            } else {
+              $insertNodeToNearestRoot(imageNode);
+            }
           });
 
           /*const relatedCollection = collections.find((coll) => {
