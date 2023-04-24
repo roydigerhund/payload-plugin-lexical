@@ -30,7 +30,15 @@ function UploadPlugin({ captionsEnabled, }) {
                     widthOverride: undefined,
                     heightOverride: undefined,
                 }, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.showCaption, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.caption, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.captionsEnabled);
-                (0, utils_1.$insertNodeToNearestRoot)(imageNode);
+                const selection = (0, lexical_1.$getSelection)();
+                const node = selection === null || selection === void 0 ? void 0 : selection.getNodes()[0];
+                if (node && (0, lexical_1.$isTextNode)(node) && !(0, lexical_1.$isRootOrShadowRoot)(node)) {
+                    node.replace(imageNode);
+                    node.insertAfter((0, lexical_1.$createParagraphNode)());
+                }
+                else {
+                    (0, utils_1.$insertNodeToNearestRoot)(imageNode);
+                }
             });
             /*const relatedCollection = collections.find((coll) => {
               console.log('coll.slug', coll.slug, 'insertImagePayload.relationTo', insertImagePayload.relationTo);
