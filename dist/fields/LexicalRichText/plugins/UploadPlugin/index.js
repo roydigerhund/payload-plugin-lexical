@@ -30,10 +30,7 @@ function UploadPlugin({ captionsEnabled, }) {
                     widthOverride: undefined,
                     heightOverride: undefined,
                 }, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.showCaption, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.caption, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.captionsEnabled);
-                (0, lexical_1.$insertNodes)([imageNode]);
-                if ((0, lexical_1.$isRootOrShadowRoot)(imageNode.getParentOrThrow())) {
-                    (0, utils_1.$wrapNodeInElement)(imageNode, lexical_1.$createParagraphNode).selectEnd();
-                }
+                (0, utils_1.$insertNodeToNearestRoot)(imageNode);
             });
             /*const relatedCollection = collections.find((coll) => {
               console.log('coll.slug', coll.slug, 'insertImagePayload.relationTo', insertImagePayload.relationTo);
