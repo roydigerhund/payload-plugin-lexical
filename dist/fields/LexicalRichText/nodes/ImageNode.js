@@ -75,7 +75,7 @@ class ImageNode extends lexical_2.DecoratorNode {
         this.__extraAttributes = extraAttributes;
         this.__showCaption = showCaption || false;
         this.__caption = caption || (0, lexical_1.createEditor)();
-        this.__captionsEnabled = captionsEnabled || captionsEnabled === undefined;
+        this.__captionsEnabled = captionsEnabled;
     }
     static importJSON(serializedNode) {
         const { rawImagePayload, type, version, extraAttributes, caption, showCaption, } = serializedNode;

@@ -129,7 +129,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     this.__extraAttributes = extraAttributes;
     this.__showCaption = showCaption || false;
     this.__caption = caption || createEditor();
-    this.__captionsEnabled = captionsEnabled || captionsEnabled === undefined;
+    this.__captionsEnabled = captionsEnabled;
   }
 
   static importJSON(serializedNode: SerializedImageNode): ImageNode {
