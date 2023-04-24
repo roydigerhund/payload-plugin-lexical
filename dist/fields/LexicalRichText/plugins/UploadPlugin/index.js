@@ -32,7 +32,7 @@ function UploadPlugin({ captionsEnabled, }) {
                 }, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.showCaption, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.caption, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.captionsEnabled);
                 const selection = (0, lexical_1.$getSelection)();
                 const node = selection === null || selection === void 0 ? void 0 : selection.getNodes()[0];
-                if (node && (0, lexical_1.$isTextNode)(node) && !(0, lexical_1.$isRootOrShadowRoot)(node)) {
+                if (node && (0, lexical_1.$isParagraphNode)(node) && !node.children.length) {
                     node.replace(imageNode);
                     node.insertAfter((0, lexical_1.$createParagraphNode)());
                 }
