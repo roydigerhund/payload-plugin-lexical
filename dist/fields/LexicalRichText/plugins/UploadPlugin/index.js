@@ -26,13 +26,14 @@ function UploadPlugin({ captionsEnabled, }) {
             // This is run on the browser. Can't just use 'payload' object
             console.log('Received INSERT_IMAGE_COMMAND with payload', insertImagePayload);
             editor.update(() => {
+                var _a;
                 const imageNode = (0, ImageNode_1.$createImageNode)(insertImagePayload.rawImagePayload, {
                     widthOverride: undefined,
                     heightOverride: undefined,
                 }, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.showCaption, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.caption, insertImagePayload === null || insertImagePayload === void 0 ? void 0 : insertImagePayload.captionsEnabled);
                 const selection = (0, lexical_1.$getSelection)();
                 const node = selection === null || selection === void 0 ? void 0 : selection.getNodes()[0];
-                if (node && (0, lexical_1.$isParagraphNode)(node) && !node.children.length) {
+                if (node && (0, lexical_1.$isParagraphNode)(node) && !((_a = node === null || node === void 0 ? void 0 : node.children) === null || _a === void 0 ? void 0 : _a.length)) {
                     node.replace(imageNode);
                     node.insertAfter((0, lexical_1.$createParagraphNode)());
                 }

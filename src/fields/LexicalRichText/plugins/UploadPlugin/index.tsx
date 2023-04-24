@@ -84,7 +84,7 @@ export default function UploadPlugin({
             );
             const selection = $getSelection();
             const node = selection?.getNodes()[0];
-            if (node && $isParagraphNode(node) && !node.children.length) {
+            if (node && $isParagraphNode(node) && !node?.children?.length) {
               node.replace(imageNode);
               node.insertAfter($createParagraphNode());
             } else {
