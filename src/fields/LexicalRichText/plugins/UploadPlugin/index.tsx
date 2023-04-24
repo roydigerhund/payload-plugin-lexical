@@ -17,6 +17,7 @@ import {
   $getSelection,
   $insertNodes,
   $isNodeSelection,
+  $isParagraphNode,
   $isRootOrShadowRoot,
   $isTextNode,
   $setSelection,
@@ -83,7 +84,7 @@ export default function UploadPlugin({
             );
             const selection = $getSelection();
             const node = selection?.getNodes()[0];
-            if (node && $isTextNode(node) && !$isRootOrShadowRoot(node)) {
+            if (node && $isParagraphNode(node) && !node.children.length) {
               node.replace(imageNode);
               node.insertAfter($createParagraphNode());
             } else {
