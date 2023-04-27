@@ -9,14 +9,16 @@
 import './Collapsible.scss';
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { $findMatchingParent, mergeRegister } from '@lexical/utils';
+import { $findMatchingParent, $insertNodeToNearestRoot, mergeRegister } from '@lexical/utils';
 import {
   $createParagraphNode,
   $getNodeByKey,
   $getPreviousSelection,
   $getSelection,
   $isElementNode,
+  $isParagraphNode,
   $isRangeSelection,
+  $isRootOrShadowRoot,
   $setSelection,
   COMMAND_PRIORITY_EDITOR,
   COMMAND_PRIORITY_LOW,
@@ -209,7 +211,15 @@ export default function CollapsiblePlugin(): JSX.Element | null {
               title,
               content,
             );
-            selection.insertNodes([container]);
+
+            const node = selection?.getNodes()[0];
+            const parent = node?.getParent();
+            if (node && $isParagraphNode(node) && !node?.children?.length && parent && $isRootOrShadowRoot(parent)) {
+              node.replace(container);
+              container.insertAfter($createParagraphNode());
+            } else {
+              $insertNodeToNearestRoot(container);
+            }
             title.selectStart();
           });
 

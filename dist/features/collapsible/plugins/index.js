@@ -123,6 +123,7 @@ function CollapsiblePlugin() {
             return false;
         }, lexical_1.COMMAND_PRIORITY_LOW), editor.registerCommand(exports.INSERT_COLLAPSIBLE_COMMAND, () => {
             editor.update(() => {
+                var _a;
                 const selection = (0, lexical_1.$getSelection)();
                 if (!(0, lexical_1.$isRangeSelection)(selection)) {
                     return;
@@ -130,7 +131,15 @@ function CollapsiblePlugin() {
                 const title = (0, CollapsibleTitleNode_1.$createCollapsibleTitleNode)();
                 const content = (0, CollapsibleContentNode_1.$createCollapsibleContentNode)().append((0, lexical_1.$createParagraphNode)());
                 const container = (0, CollapsibleContainerNode_1.$createCollapsibleContainerNode)(true).append(title, content);
-                selection.insertNodes([container]);
+                const node = selection === null || selection === void 0 ? void 0 : selection.getNodes()[0];
+                const parent = node === null || node === void 0 ? void 0 : node.getParent();
+                if (node && (0, lexical_1.$isParagraphNode)(node) && !((_a = node === null || node === void 0 ? void 0 : node.children) === null || _a === void 0 ? void 0 : _a.length) && parent && (0, lexical_1.$isRootOrShadowRoot)(parent)) {
+                    node.replace(container);
+                    container.insertAfter((0, lexical_1.$createParagraphNode)());
+                }
+                else {
+                    (0, utils_1.$insertNodeToNearestRoot)(container);
+                }
                 title.selectStart();
             });
             return true;
