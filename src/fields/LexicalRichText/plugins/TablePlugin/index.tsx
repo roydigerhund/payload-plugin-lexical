@@ -181,8 +181,8 @@ export function InsertNewTableDialog({}: {}): JSX.Element {
   });
   const { toggleModal, closeModal } = useModal();
 
-  const [rows, setRows] = useState('');
-  const [columns, setColumns] = useState('');
+  const [rows, setRows] = useState('3');
+  const [columns, setColumns] = useState('3');
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
@@ -214,7 +214,6 @@ export function InsertNewTableDialog({}: {}): JSX.Element {
           value={rows}
           data-test-id="table-modal-rows"
           type="number"
-          defaultValue="3"
         />
         <TextInput
           placeholder={'# of columns (1-50)'}
@@ -223,7 +222,6 @@ export function InsertNewTableDialog({}: {}): JSX.Element {
           value={columns}
           data-test-id="table-modal-columns"
           type="number"
-          defaultValue="3"
         />
         <DialogActions data-test-id="table-modal-confirm-insert">
           <Button disabled={isDisabled} onClick={onClick}>

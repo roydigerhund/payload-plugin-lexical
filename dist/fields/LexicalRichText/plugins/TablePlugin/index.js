@@ -120,8 +120,8 @@ function InsertNewTableDialog({}) {
         depth: editDepth,
     });
     const { toggleModal, closeModal } = (0, modal_1.useModal)();
-    const [rows, setRows] = (0, react_1.useState)('');
-    const [columns, setColumns] = (0, react_1.useState)('');
+    const [rows, setRows] = (0, react_1.useState)('3');
+    const [columns, setColumns] = (0, react_1.useState)('3');
     const [isDisabled, setIsDisabled] = (0, react_1.useState)(true);
     (0, react_1.useEffect)(() => {
         const row = Number(rows);
@@ -139,8 +139,8 @@ function InsertNewTableDialog({}) {
     };
     return (React.createElement(Drawer_1.Drawer, { slug: newTableDrawerSlug, key: newTableDrawerSlug, className: baseClass, title: "Add new table" },
         React.createElement(React.Fragment, null,
-            React.createElement(TextInput_1.default, { placeholder: '# of rows (1-500)', label: "Rows", onChange: setRows, value: rows, "data-test-id": "table-modal-rows", type: "number", defaultValue: "3" }),
-            React.createElement(TextInput_1.default, { placeholder: '# of columns (1-50)', label: "Columns", onChange: setColumns, value: columns, "data-test-id": "table-modal-columns", type: "number", defaultValue: "3" }),
+            React.createElement(TextInput_1.default, { placeholder: '# of rows (1-500)', label: "Rows", onChange: setRows, value: rows, "data-test-id": "table-modal-rows", type: "number" }),
+            React.createElement(TextInput_1.default, { placeholder: '# of columns (1-50)', label: "Columns", onChange: setColumns, value: columns, "data-test-id": "table-modal-columns", type: "number" }),
             React.createElement(Dialog_1.DialogActions, { "data-test-id": "table-modal-confirm-insert" },
                 React.createElement(Button_1.default, { disabled: isDisabled, onClick: onClick }, "Confirm")))));
 }
