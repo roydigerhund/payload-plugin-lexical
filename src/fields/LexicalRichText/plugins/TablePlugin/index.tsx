@@ -205,7 +205,7 @@ export function InsertNewTableDialog({}: {}): JSX.Element {
       slug={newTableDrawerSlug}
       key={newTableDrawerSlug}
       className={baseClass}
-      title="Add new table">
+      title="Add new table (Experimental)">
       <React.Fragment>
         <TextInput
           placeholder={'# of rows (1-500)'}
@@ -254,8 +254,8 @@ export function TablePlugin({
       INSERT_NEW_TABLE_COMMAND,
       ({ columns, rows, includeHeaders }) => {
         const tableNode = $createTableNodeWithDimensions(
-          Number(rows),
           Number(columns),
+          Number(rows),
           includeHeaders,
         );
         $insertNodes([tableNode]);

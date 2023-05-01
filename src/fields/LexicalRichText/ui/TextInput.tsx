@@ -18,7 +18,6 @@ type Props = Readonly<{
   placeholder?: string;
   value: string;
   type?: HTMLInputTypeAttribute;
-  defaultValue?: string;
 }>;
 
 export default function TextInput({
@@ -28,7 +27,6 @@ export default function TextInput({
   placeholder = '',
   'data-test-id': dataTestId,
   type = 'text',
-  defaultValue
 }: Props): JSX.Element {
   return (
     <div className="Input__wrapper">
@@ -42,7 +40,6 @@ export default function TextInput({
           onChange(e.target.value);
         }}
         data-test-id={dataTestId}
-        defaultValue={defaultValue}
       />
     </div>
   );

@@ -14,7 +14,6 @@ type Props = Readonly<{
     placeholder?: string;
     value: string;
     type?: HTMLInputTypeAttribute;
-    defaultValue?: string;
 }>;
-export default function TextInput({ label, value, onChange, placeholder, 'data-test-id': dataTestId, type, defaultValue }: Props): JSX.Element;
+export default function TextInput({ label, value, onChange, placeholder, 'data-test-id': dataTestId, type, }: Props): JSX.Element;
 export {};

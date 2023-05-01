@@ -32,12 +32,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./Input.scss");
 const React = __importStar(require("react"));
-function TextInput({ label, value, onChange, placeholder = '', 'data-test-id': dataTestId, type = 'text', defaultValue }) {
+function TextInput({ label, value, onChange, placeholder = '', 'data-test-id': dataTestId, type = 'text', }) {
     return (React.createElement("div", { className: "Input__wrapper" },
         React.createElement("label", { className: "Input__label" }, label),
         React.createElement("input", { type: type, className: "Input__input", placeholder: placeholder, value: value, onChange: (e) => {
                 onChange(e.target.value);
-            }, "data-test-id": dataTestId, defaultValue: defaultValue })));
+            }, "data-test-id": dataTestId })));
 }
 exports.default = TextInput;
 //# sourceMappingURL=TextInput.js.map

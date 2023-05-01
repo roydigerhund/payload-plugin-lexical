@@ -137,7 +137,7 @@ function InsertNewTableDialog({}) {
         activeEditor.dispatchCommand(exports.INSERT_NEW_TABLE_COMMAND, { columns, rows });
         closeModal(newTableDrawerSlug);
     };
-    return (React.createElement(Drawer_1.Drawer, { slug: newTableDrawerSlug, key: newTableDrawerSlug, className: baseClass, title: "Add new table" },
+    return (React.createElement(Drawer_1.Drawer, { slug: newTableDrawerSlug, key: newTableDrawerSlug, className: baseClass, title: "Add new table (Experimental)" },
         React.createElement(React.Fragment, null,
             React.createElement(TextInput_1.default, { placeholder: '# of rows (1-500)', label: "Rows", onChange: setRows, value: rows, "data-test-id": "table-modal-rows", type: "number" }),
             React.createElement(TextInput_1.default, { placeholder: '# of columns (1-50)', label: "Columns", onChange: setColumns, value: columns, "data-test-id": "table-modal-columns", type: "number" }),
@@ -154,7 +154,7 @@ function TablePlugin({ cellEditorConfig, children, }) {
         }
         cellContext.set(cellEditorConfig, children);
         return editor.registerCommand(exports.INSERT_NEW_TABLE_COMMAND, ({ columns, rows, includeHeaders }) => {
-            const tableNode = (0, TableNode_1.$createTableNodeWithDimensions)(Number(rows), Number(columns), includeHeaders);
+            const tableNode = (0, TableNode_1.$createTableNodeWithDimensions)(Number(columns), Number(rows), includeHeaders);
             (0, lexical_1.$insertNodes)([tableNode]);
             return true;
         }, lexical_1.COMMAND_PRIORITY_EDITOR);

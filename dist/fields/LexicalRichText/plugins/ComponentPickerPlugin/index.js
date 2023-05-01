@@ -142,14 +142,12 @@ function ComponentPickerMenuPlugin(props) {
         })));
         if (editorConfig.toggles.tables.enabled &&
             editorConfig.toggles.tables.display) {
-            // baseOptions.push(
-            //   new ComponentPickerOption('Table', {
-            //     icon: <i className="icon table" />,
-            //     keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
-            //     onSelect: () => editor.dispatchCommand(OPEN_MODAL_COMMAND, 'table'),
-            //   }),
-            // );
             baseOptions.push(new ComponentPickerOption('Table', {
+                icon: React.createElement("i", { className: "icon table" }),
+                keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
+                onSelect: () => editor.dispatchCommand(ModalPlugin_1.OPEN_MODAL_COMMAND, 'table'),
+            }));
+            baseOptions.push(new ComponentPickerOption('Table (Experimental)', {
                 icon: React.createElement("i", { className: "icon table" }),
                 keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
                 onSelect: () => editor.dispatchCommand(ModalPlugin_1.OPEN_MODAL_COMMAND, 'newtable'),
