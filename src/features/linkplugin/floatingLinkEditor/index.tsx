@@ -80,7 +80,7 @@ function LinkEditor({
 
   const [initialState, setInitialState] = useState<Fields>({});
   const [fieldSchema] = useState(() => {
-    const fields: Field[] = [...getBaseFields(config)];
+    const fields: Field[] = [...getBaseFields(config).filter(f => !('name' in f) || f.name !== 'newTab')];
 
     if (customFieldSchema) {
       fields.push({
