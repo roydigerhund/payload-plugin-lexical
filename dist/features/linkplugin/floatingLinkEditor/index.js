@@ -79,7 +79,7 @@ function LinkEditor({ editor, isLink, setIsLink, anchorElem, }) {
     const { t } = (0, react_i18next_1.useTranslation)('fields');
     const [initialState, setInitialState] = (0, react_1.useState)({});
     const [fieldSchema] = (0, react_1.useState)(() => {
-        const fields = [...(0, baseFields_1.getBaseFields)(config)];
+        const fields = [...(0, baseFields_1.getBaseFields)(config).filter(f => !('name' in f) || f.name !== 'newTab')];
         if (customFieldSchema) {
             fields.push({
                 name: 'fields',
