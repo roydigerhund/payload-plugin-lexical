@@ -177,41 +177,38 @@ export default function ComponentPickerMenuPlugin(props: {
     // @ts-ignore
     // @ts-ignore
     const baseOptions: ComponentPickerOption[] = [];
-    if (editorConfig.toggles.blocks.includes('paragraph'))
-      baseOptions.push(
-        new ComponentPickerOption('Paragraph', {
-          icon: <i className="icon paragraph" />,
-          keywords: ['normal', 'paragraph', 'p', 'text'],
-          onSelect: () =>
-            editor.update(() => {
-              const selection = $getSelection();
-              if ($isRangeSelection(selection)) {
-                $setBlocksType(selection, () => $createParagraphNode());
-              }
-            }),
-        }),
-      );
-
-    const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const;
     baseOptions.push(
-      ...headings
-        .filter((n) => editorConfig.toggles.blocks.includes(n))
-        .map(
-          (heading) =>
-            new ComponentPickerOption(`Heading ${parseInt(heading[1], 10)}`, {
-              icon: <i className={`icon ${heading}`} />,
-              keywords: ['heading', 'header', heading],
-              onSelect: () =>
-                editor.update(() => {
-                  const selection = $getSelection();
-                  if ($isRangeSelection(selection)) {
-                    $setBlocksType(selection, () =>
-                      $createHeadingNode(heading),
-                    );
-                  }
-                }),
-            }),
-        ),
+      new ComponentPickerOption('Paragraph', {
+        icon: <i className="icon paragraph" />,
+        keywords: ['normal', 'paragraph', 'p', 'text'],
+        onSelect: () =>
+          editor.update(() => {
+            const selection = $getSelection();
+            if ($isRangeSelection(selection)) {
+              $setBlocksType(selection, () => $createParagraphNode());
+            }
+          }),
+      }),
+    );
+
+    baseOptions.push(
+      ...Array.from({ length: 3 }, (_, i) => i + 1).map(
+        (n) =>
+          new ComponentPickerOption(`Heading ${n}`, {
+            icon: <i className={`icon h${n}`} />,
+            keywords: ['heading', 'header', `h${n}`],
+            onSelect: () =>
+              editor.update(() => {
+                const selection = $getSelection();
+                if ($isRangeSelection(selection)) {
+                  $setBlocksType(selection, () =>
+                    // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
+                    $createHeadingNode(`h${n}`),
+                  );
+                }
+              }),
+          }),
+      ),
     );
 
     if (
@@ -236,74 +233,69 @@ export default function ComponentPickerMenuPlugin(props: {
       );
     }
 
-    if (editorConfig.toggles.blocks.includes('number'))
-      baseOptions.push(
-        new ComponentPickerOption('Numbered List', {
-          icon: <i className="icon number" />,
-          keywords: ['numbered list', 'ordered list', 'ol'],
-          onSelect: () =>
-            editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined),
-        }),
-      );
+    baseOptions.push(
+      new ComponentPickerOption('Numbered List', {
+        icon: <i className="icon number" />,
+        keywords: ['numbered list', 'ordered list', 'ol'],
+        onSelect: () =>
+          editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined),
+      }),
+    );
 
-    if (editorConfig.toggles.blocks.includes('bullet'))
-      baseOptions.push(
-        new ComponentPickerOption('Bulleted List', {
-          icon: <i className="icon bullet" />,
-          keywords: ['bulleted list', 'unordered list', 'ul'],
-          onSelect: () =>
-            editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined),
-        }),
-      );
+    baseOptions.push(
+      new ComponentPickerOption('Bulleted List', {
+        icon: <i className="icon bullet" />,
+        keywords: ['bulleted list', 'unordered list', 'ul'],
+        onSelect: () =>
+          editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined),
+      }),
+    );
 
-    if (editorConfig.toggles.blocks.includes('check'))
-      baseOptions.push(
-        new ComponentPickerOption('Check List', {
-          icon: <i className="icon check" />,
-          keywords: ['check list', 'todo list'],
-          onSelect: () =>
-            editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined),
-        }),
-      );
+    baseOptions.push(
+      new ComponentPickerOption('Check List', {
+        icon: <i className="icon check" />,
+        keywords: ['check list', 'todo list'],
+        onSelect: () =>
+          editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined),
+      }),
+    );
 
-    if (editorConfig.toggles.blocks.includes('quote'))
-      baseOptions.push(
-        new ComponentPickerOption('Quote', {
-          icon: <i className="icon quote" />,
-          keywords: ['block quote'],
-          onSelect: () =>
-            editor.update(() => {
-              const selection = $getSelection();
-              if ($isRangeSelection(selection)) {
-                $setBlocksType(selection, () => $createQuoteNode());
+    baseOptions.push(
+      new ComponentPickerOption('Quote', {
+        icon: <i className="icon quote" />,
+        keywords: ['block quote'],
+        onSelect: () =>
+          editor.update(() => {
+            const selection = $getSelection();
+            if ($isRangeSelection(selection)) {
+              $setBlocksType(selection, () => $createQuoteNode());
+            }
+          }),
+      }),
+    );
+
+    baseOptions.push(
+      new ComponentPickerOption('Code', {
+        icon: <i className="icon code" />,
+        keywords: ['javascript', 'python', 'js', 'codeblock'],
+        onSelect: () =>
+          editor.update(() => {
+            const selection = $getSelection();
+
+            if ($isRangeSelection(selection)) {
+              if (selection.isCollapsed()) {
+                $setBlocksType(selection, () => $createCodeNode());
+              } else {
+                // Will this ever happen?
+                const textContent = selection.getTextContent();
+                const codeNode = $createCodeNode();
+                selection.insertNodes([codeNode]);
+                selection.insertRawText(textContent);
               }
-            }),
-        }),
-      );
-
-    if (editorConfig.toggles.blocks.includes('code'))
-      baseOptions.push(
-        new ComponentPickerOption('Code', {
-          icon: <i className="icon code" />,
-          keywords: ['javascript', 'python', 'js', 'codeblock'],
-          onSelect: () =>
-            editor.update(() => {
-              const selection = $getSelection();
-
-              if ($isRangeSelection(selection)) {
-                if (selection.isCollapsed()) {
-                  $setBlocksType(selection, () => $createCodeNode());
-                } else {
-                  // Will this ever happen?
-                  const textContent = selection.getTextContent();
-                  const codeNode = $createCodeNode();
-                  selection.insertNodes([codeNode]);
-                  selection.insertRawText(textContent);
-                }
-              }
-            }),
-        }),
-      );
+            }
+          }),
+      }),
+    );
 
     baseOptions.push(
       ...getEmbedConfigs(editorConfig).map(

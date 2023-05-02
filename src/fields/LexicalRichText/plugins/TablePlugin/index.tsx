@@ -181,8 +181,8 @@ export function InsertNewTableDialog({}: {}): JSX.Element {
   });
   const { toggleModal, closeModal } = useModal();
 
-  const [rows, setRows] = useState('3');
-  const [columns, setColumns] = useState('3');
+  const [rows, setRows] = useState('');
+  const [columns, setColumns] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
@@ -254,8 +254,8 @@ export function TablePlugin({
       INSERT_NEW_TABLE_COMMAND,
       ({ columns, rows, includeHeaders }) => {
         const tableNode = $createTableNodeWithDimensions(
-          Number(columns),
           Number(rows),
+          Number(columns),
           includeHeaders,
         );
         $insertNodes([tableNode]);

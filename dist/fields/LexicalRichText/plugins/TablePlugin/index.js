@@ -120,8 +120,8 @@ function InsertNewTableDialog({}) {
         depth: editDepth,
     });
     const { toggleModal, closeModal } = (0, modal_1.useModal)();
-    const [rows, setRows] = (0, react_1.useState)('3');
-    const [columns, setColumns] = (0, react_1.useState)('3');
+    const [rows, setRows] = (0, react_1.useState)('');
+    const [columns, setColumns] = (0, react_1.useState)('');
     const [isDisabled, setIsDisabled] = (0, react_1.useState)(true);
     (0, react_1.useEffect)(() => {
         const row = Number(rows);
@@ -154,7 +154,7 @@ function TablePlugin({ cellEditorConfig, children, }) {
         }
         cellContext.set(cellEditorConfig, children);
         return editor.registerCommand(exports.INSERT_NEW_TABLE_COMMAND, ({ columns, rows, includeHeaders }) => {
-            const tableNode = (0, TableNode_1.$createTableNodeWithDimensions)(Number(columns), Number(rows), includeHeaders);
+            const tableNode = (0, TableNode_1.$createTableNodeWithDimensions)(Number(rows), Number(columns), includeHeaders);
             (0, lexical_1.$insertNodes)([tableNode]);
             return true;
         }, lexical_1.COMMAND_PRIORITY_EDITOR);

@@ -110,12 +110,12 @@ function LinkEditor({
     });
 
     fields.push({
-      name: 'nofollow',
-      label: 'Nofollow',
-      type: 'checkbox',
+      name: 'hash',
+      label: 'Hash',
+      type: 'text',
       admin: {
         condition: ({ linkType }) => {
-          return linkType === 'custom';
+          return linkType === 'internal';
         },
       },
     });
@@ -144,9 +144,8 @@ function LinkEditor({
         text: '',
         url: '',
         linkType: undefined,
-        newTab: undefined,
         sponsored: undefined,
-        nofollow: undefined,
+        hash: undefined,
         doc: undefined,
         fields: undefined,
       };
@@ -325,9 +324,8 @@ function LinkEditor({
           const data = reduceFieldsToValues(fields, true);
 
           const newNode: LinkAttributes & { text?: string } = {
-            newTab: data.newTab,
             sponsored: data.sponsored,
-            nofollow: data.nofollow,
+            hash: data.hash,
             url: data.linkType === 'custom' ? data.url : undefined,
             linkType: data.linkType,
             doc: data.linkType === 'internal' ? data.doc : undefined,

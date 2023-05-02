@@ -32,9 +32,7 @@ class LinkNode extends lexical_2.ElementNode {
     }
     constructor({ attributes = {
         url: null,
-        newTab: false,
         sponsored: false,
-        nofollow: false,
         rel: null,
         doc: null,
         linkType: 'custom',
@@ -43,49 +41,34 @@ class LinkNode extends lexical_2.ElementNode {
         this.__attributes = attributes;
     }
     createDOM(config) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c;
         const element = document.createElement('a');
         if (((_a = this.__attributes) === null || _a === void 0 ? void 0 : _a.linkType) === 'custom') {
             element.href = this.sanitizeUrl(this.__attributes.url);
         }
-        if ((_b = this.__attributes) === null || _b === void 0 ? void 0 : _b.newTab) {
-            element.target = '_blank';
-        }
         element.rel = '';
-        if ((_c = this.__attributes) === null || _c === void 0 ? void 0 : _c.sponsored) {
+        if ((_b = this.__attributes) === null || _b === void 0 ? void 0 : _b.sponsored) {
             element.rel += 'sponsored';
         }
-        if ((_d = this.__attributes) === null || _d === void 0 ? void 0 : _d.nofollow) {
-            element.rel += ' nofollow';
-        }
-        if (((_e = this.__attributes) === null || _e === void 0 ? void 0 : _e.rel) !== null) {
+        if (((_c = this.__attributes) === null || _c === void 0 ? void 0 : _c.rel) !== null) {
             element.rel += ' ' + this.__rel;
         }
         (0, utils_1.addClassNamesToElement)(element, config.theme.link);
         return element;
     }
     updateDOM(prevNode, anchor, config) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         const url = (_a = this.__attributes) === null || _a === void 0 ? void 0 : _a.url;
-        const newTab = (_b = this.__attributes) === null || _b === void 0 ? void 0 : _b.newTab;
-        const sponsored = (_c = this.__attributes) === null || _c === void 0 ? void 0 : _c.sponsored;
-        const nofollow = (_d = this.__attributes) === null || _d === void 0 ? void 0 : _d.nofollow;
-        const rel = (_e = this.__attributes) === null || _e === void 0 ? void 0 : _e.rel;
-        if (url !== ((_f = prevNode.__attributes) === null || _f === void 0 ? void 0 : _f.url) &&
-            ((_g = this.__attributes) === null || _g === void 0 ? void 0 : _g.linkType) === 'custom') {
+        const sponsored = (_b = this.__attributes) === null || _b === void 0 ? void 0 : _b.sponsored;
+        const hash = (_c = this.__attributes) === null || _c === void 0 ? void 0 : _c.hash;
+        const rel = (_d = this.__attributes) === null || _d === void 0 ? void 0 : _d.rel;
+        if (url !== ((_e = prevNode.__attributes) === null || _e === void 0 ? void 0 : _e.url) &&
+            ((_f = this.__attributes) === null || _f === void 0 ? void 0 : _f.linkType) === 'custom') {
             anchor.href = url;
         }
-        if (((_h = this.__attributes) === null || _h === void 0 ? void 0 : _h.linkType) === 'internal' &&
-            ((_j = prevNode.__attributes) === null || _j === void 0 ? void 0 : _j.linkType) === 'custom') {
+        if (((_g = this.__attributes) === null || _g === void 0 ? void 0 : _g.linkType) === 'internal' &&
+            ((_h = prevNode.__attributes) === null || _h === void 0 ? void 0 : _h.linkType) === 'custom') {
             anchor.removeAttribute('href');
-        }
-        if (newTab !== ((_k = prevNode.__attributes) === null || _k === void 0 ? void 0 : _k.newTab)) {
-            if (newTab) {
-                anchor.target = '_blank';
-            }
-            else {
-                anchor.removeAttribute('target');
-            }
         }
         if (!anchor.rel) {
             anchor.rel = '';
@@ -98,12 +81,12 @@ class LinkNode extends lexical_2.ElementNode {
                 anchor.rel.replace(' sponsored', '').replace('sponsored', '');
             }
         }
-        if (nofollow !== prevNode.__attributes.nofollow) {
-            if (nofollow) {
-                anchor.rel += 'nofollow';
+        if (hash !== prevNode.__attributes.hash) {
+            if (hash) {
+                anchor.hash = hash;
             }
             else {
-                anchor.rel.replace(' nofollow', '').replace('nofollow', '');
+                anchor.removeAttribute('hash');
             }
         }
         if (rel !== prevNode.__attributes.rel) {
@@ -190,7 +173,7 @@ class LinkNode extends lexical_2.ElementNode {
 }
 exports.LinkNode = LinkNode;
 function convertAnchorElement(domNode) {
-    var _a, _b;
+    var _a;
     let node = null;
     if ((0, utils_1.isHTMLAnchorElement)(domNode)) {
         const content = domNode.textContent;
@@ -199,9 +182,7 @@ function convertAnchorElement(domNode) {
                 attributes: {
                     url: domNode.getAttribute('href') || '',
                     rel: domNode.getAttribute('rel'),
-                    newTab: domNode.getAttribute('target') === '_blank',
                     sponsored: ((_a = domNode.getAttribute('rel')) === null || _a === void 0 ? void 0 : _a.includes('sponsored')) || false,
-                    nofollow: ((_b = domNode.getAttribute('rel')) === null || _b === void 0 ? void 0 : _b.includes('nofollow')) || false,
                     linkType: 'custom',
                     doc: null,
                 },

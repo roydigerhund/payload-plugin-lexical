@@ -12,9 +12,8 @@ import { SerializedAutoLinkNode } from './AutoLinkNodeModified';
 export type LinkAttributes = {
     url?: string;
     rel?: null | string;
-    newTab?: boolean;
     sponsored?: boolean;
-    nofollow?: boolean;
+    hash?: string;
     doc?: {
         value: string;
         relationTo: string;

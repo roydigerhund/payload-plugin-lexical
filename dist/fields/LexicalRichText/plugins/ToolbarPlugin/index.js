@@ -546,7 +546,7 @@ function ToolbarPlugin(props) {
                         editor.dispatchCommand(ModalPlugin_1.OPEN_MODAL_COMMAND, 'table');
                     }, className: "item" },
                     React.createElement("i", { className: "icon table" }),
-                    React.createElement("span", { className: "text" }, "Table"))) //TODO: Replace this with experimental table once not experimental anymore. Might be worth the wait as it's better, and its data structure is different
+                    React.createElement("span", { className: "text" }, "Table"))) //TODO: Replace this with experimental table once not experimental anymore. Might be worth the wait as it's better, and its data structure is different */
             ,
                 editorConfig.toggles.tables.enabled &&
                     editorConfig.toggles.tables.display && (React.createElement(DropDown_1.DropDownItem, { onClick: () => {

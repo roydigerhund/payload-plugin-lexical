@@ -967,7 +967,7 @@ export default function ToolbarPlugin(props: {
                     <i className="icon table" />
                     <span className="text">Table</span>
                   </DropDownItem>
-                ) //TODO: Replace this with experimental table once not experimental anymore. Might be worth the wait as it's better, and its data structure is different
+                ) //TODO: Replace this with experimental table once not experimental anymore. Might be worth the wait as it's better, and its data structure is different */
             }
             {editorConfig.toggles.tables.enabled &&
               editorConfig.toggles.tables.display && (

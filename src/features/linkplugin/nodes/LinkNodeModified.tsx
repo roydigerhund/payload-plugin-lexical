@@ -36,9 +36,8 @@ import { SerializedAutoLinkNode } from './AutoLinkNodeModified';
 export type LinkAttributes = {
   url?: string;
   rel?: null | string;
-  newTab?: boolean;
   sponsored?: boolean;
-  nofollow?: boolean;
+  hash?: string;
   doc?: {
     value: string;
     relationTo: string;
@@ -79,9 +78,7 @@ export class LinkNode extends ElementNode {
   constructor({
     attributes = {
       url: null,
-      newTab: false,
       sponsored: false,
-      nofollow: false,
       rel: null,
       doc: null,
       linkType: 'custom',
@@ -100,18 +97,10 @@ export class LinkNode extends ElementNode {
     if (this.__attributes?.linkType === 'custom') {
       element.href = this.sanitizeUrl(this.__attributes.url);
     }
-    if (this.__attributes?.newTab) {
-      element.target = '_blank';
-    }
-
     element.rel = '';
 
     if (this.__attributes?.sponsored) {
       element.rel += 'sponsored';
-    }
-
-    if (this.__attributes?.nofollow) {
-      element.rel += ' nofollow';
     }
 
     if (this.__attributes?.rel !== null) {
@@ -127,9 +116,8 @@ export class LinkNode extends ElementNode {
     config: EditorConfig,
   ): boolean {
     const url = this.__attributes?.url;
-    const newTab = this.__attributes?.newTab;
     const sponsored = this.__attributes?.sponsored;
-    const nofollow = this.__attributes?.nofollow;
+    const hash = this.__attributes?.hash;
     const rel = this.__attributes?.rel;
     if (
       url !== prevNode.__attributes?.url &&
@@ -144,14 +132,6 @@ export class LinkNode extends ElementNode {
       anchor.removeAttribute('href');
     }
 
-    if (newTab !== prevNode.__attributes?.newTab) {
-      if (newTab) {
-        anchor.target = '_blank';
-      } else {
-        anchor.removeAttribute('target');
-      }
-    }
-
     if (!anchor.rel) {
       anchor.rel = '';
     }
@@ -164,11 +144,11 @@ export class LinkNode extends ElementNode {
       }
     }
 
-    if (nofollow !== prevNode.__attributes.nofollow) {
-      if (nofollow) {
-        anchor.rel += 'nofollow';
+    if (hash !== prevNode.__attributes.hash) {
+      if (hash) {
+        anchor.hash = hash;
       } else {
-        anchor.rel.replace(' nofollow', '').replace('nofollow', '');
+        anchor.removeAttribute('hash');
       }
     }
 
@@ -295,10 +275,8 @@ function convertAnchorElement(domNode: Node): DOMConversionOutput {
         attributes: {
           url: domNode.getAttribute('href') || '',
           rel: domNode.getAttribute('rel'),
-          newTab: domNode.getAttribute('target') === '_blank',
           sponsored:
             domNode.getAttribute('rel')?.includes('sponsored') || false,
-          nofollow: domNode.getAttribute('rel')?.includes('nofollow') || false,
           linkType: 'custom',
           doc: null,
         },

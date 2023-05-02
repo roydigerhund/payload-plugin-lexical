@@ -106,12 +106,12 @@ function LinkEditor({ editor, isLink, setIsLink, anchorElem, }) {
             },
         });
         fields.push({
-            name: 'nofollow',
-            label: 'Nofollow',
-            type: 'checkbox',
+            name: 'hash',
+            label: 'Hash',
+            type: 'text',
             admin: {
                 condition: ({ linkType }) => {
-                    return linkType === 'custom';
+                    return linkType === 'internal';
                 },
             },
         });
@@ -135,9 +135,8 @@ function LinkEditor({ editor, isLink, setIsLink, anchorElem, }) {
                 text: '',
                 url: '',
                 linkType: undefined,
-                newTab: undefined,
                 sponsored: undefined,
-                nofollow: undefined,
+                hash: undefined,
                 doc: undefined,
                 fields: undefined,
             };
@@ -256,9 +255,8 @@ function LinkEditor({ editor, isLink, setIsLink, anchorElem, }) {
                 closeModal(drawerSlug);
                 const data = (0, reduceFieldsToValues_1.default)(fields, true);
                 const newNode = {
-                    newTab: data.newTab,
                     sponsored: data.sponsored,
-                    nofollow: data.nofollow,
+                    hash: data.hash,
                     url: data.linkType === 'custom' ? data.url : undefined,
                     linkType: data.linkType,
                     doc: data.linkType === 'internal' ? data.doc : undefined,
