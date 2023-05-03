@@ -29,12 +29,11 @@ export const populateLexicalRelationships: LexicalRichTextFieldAfterReadFieldHoo
     if (!value) {
       return value;
     }
-    const parentId = data?.id;
     const jsonContent = getJsonContentFromValue(value);
     if (jsonContent && jsonContent.root && jsonContent.root.children) {
       const newChildren = [];
       for (let childNode of jsonContent.root.children) {
-        newChildren.push(await traverseLexicalField(childNode, '', parentId));
+        newChildren.push(await traverseLexicalField(childNode, '', data));
       }
       jsonContent.root.children = newChildren;
     }
@@ -72,7 +71,7 @@ async function loadInternalLinkDocData(
 export async function traverseLexicalField(
   node: SerializedLexicalNode,
   locale: string,
-  parentId?: string,
+  parent?: any,
 ): Promise<SerializedLexicalNode> {
   //Find replacements
   if (node.type === 'upload') {
@@ -85,19 +84,17 @@ export async function traverseLexicalField(
   } else if (
     node.type === 'link' &&
     node['attributes']['linkType'] &&
-    node['attributes']['linkType'] === 'internal' &&
-    node['attributes']['doc']['value'] !== parentId
+    node['attributes']['linkType'] === 'internal'
   ) {
     const doc: {
       value: string;
       relationTo: string;
     } = node['attributes']['doc'];
 
-    const foundDoc = await loadInternalLinkDocData(
-      doc.value,
-      doc.relationTo,
-      locale,
-    );
+    const foundDoc =
+      node['attributes']['doc']['value'] === parent?.id
+        ? { linkToSelf: true }
+        : await loadInternalLinkDocData(doc.value, doc.relationTo, locale);
     if (foundDoc) {
       node['attributes']['doc']['data'] = foundDoc;
     }
@@ -107,7 +104,7 @@ export async function traverseLexicalField(
   if (node['children'] && node['children'].length > 0) {
     let newChildren = [];
     for (let childNode of node['children']) {
-      newChildren.push(await traverseLexicalField(childNode, locale, parentId));
+      newChildren.push(await traverseLexicalField(childNode, locale, parent));
     }
     node['children'] = newChildren;
   }

@@ -19,12 +19,11 @@ const populateLexicalRelationships = ({ value, req, data, }) => __awaiter(void 0
     if (!value) {
         return value;
     }
-    const parentId = data === null || data === void 0 ? void 0 : data.id;
     const jsonContent = (0, PayloadLexicalRichTextFieldComponent_1.getJsonContentFromValue)(value);
     if (jsonContent && jsonContent.root && jsonContent.root.children) {
         const newChildren = [];
         for (let childNode of jsonContent.root.children) {
-            newChildren.push(yield traverseLexicalField(childNode, '', parentId));
+            newChildren.push(yield traverseLexicalField(childNode, '', data));
         }
         jsonContent.root.children = newChildren;
     }
@@ -54,7 +53,7 @@ function loadInternalLinkDocData(value, relationTo, locale) {
         });
     });
 }
-function traverseLexicalField(node, locale, parentId) {
+function traverseLexicalField(node, locale, parent) {
     return __awaiter(this, void 0, void 0, function* () {
         //Find replacements
         if (node.type === 'upload') {
@@ -67,10 +66,11 @@ function traverseLexicalField(node, locale, parentId) {
         }
         else if (node.type === 'link' &&
             node['attributes']['linkType'] &&
-            node['attributes']['linkType'] === 'internal' &&
-            node['attributes']['doc']['value'] !== parentId) {
+            node['attributes']['linkType'] === 'internal') {
             const doc = node['attributes']['doc'];
-            const foundDoc = yield loadInternalLinkDocData(doc.value, doc.relationTo, locale);
+            const foundDoc = node['attributes']['doc']['value'] === (parent === null || parent === void 0 ? void 0 : parent.id)
+                ? { linkToSelf: true }
+                : yield loadInternalLinkDocData(doc.value, doc.relationTo, locale);
             if (foundDoc) {
                 node['attributes']['doc']['data'] = foundDoc;
             }
@@ -79,7 +79,7 @@ function traverseLexicalField(node, locale, parentId) {
         if (node['children'] && node['children'].length > 0) {
             let newChildren = [];
             for (let childNode of node['children']) {
-                newChildren.push(yield traverseLexicalField(childNode, locale, parentId));
+                newChildren.push(yield traverseLexicalField(childNode, locale, parent));
             }
             node['children'] = newChildren;
         }

@@ -7,5 +7,5 @@ type LexicalRichTextFieldAfterReadFieldHook = FieldHook<any, {
     words: number;
 }, any>;
 export declare const populateLexicalRelationships: LexicalRichTextFieldAfterReadFieldHook;
-export declare function traverseLexicalField(node: SerializedLexicalNode, locale: string, parentId?: string): Promise<SerializedLexicalNode>;
+export declare function traverseLexicalField(node: SerializedLexicalNode, locale: string, parent?: any): Promise<SerializedLexicalNode>;
 export {};
