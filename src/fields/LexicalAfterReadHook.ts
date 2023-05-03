@@ -19,6 +19,7 @@ export const populateLexicalRelationships: LexicalRichTextFieldAfterReadFieldHoo
   async ({
     value,
     req,
+    data,
   }): Promise<{
     jsonContent: SerializedEditorState;
     preview: string;
@@ -28,11 +29,12 @@ export const populateLexicalRelationships: LexicalRichTextFieldAfterReadFieldHoo
     if (!value) {
       return value;
     }
+    const parentId = data?.id;
     const jsonContent = getJsonContentFromValue(value);
     if (jsonContent && jsonContent.root && jsonContent.root.children) {
       const newChildren = [];
       for (let childNode of jsonContent.root.children) {
-        newChildren.push(await traverseLexicalField(childNode, ''));
+        newChildren.push(await traverseLexicalField(childNode, '', parentId));
       }
       jsonContent.root.children = newChildren;
     }
@@ -48,7 +50,7 @@ async function loadUploadData(
   return await payload.findByID({
     collection: rawImagePayload.relationTo, // required
     id: rawImagePayload.value.id, // required
-    depth: 2,
+    depth: 1,
     locale: locale,
   });
 }
@@ -58,20 +60,19 @@ async function loadInternalLinkDocData(
   relationTo: string,
   locale: string,
 ) {
-  //TODO: Adjustable depth
-
-  const foundDoc = await payload.findByID({
+  return await payload.findByID({
     collection: relationTo, // required
     id: value, // required
-    depth: 2,
+    depth: 1,
     locale: locale,
+    user: 'link-relation',
+    overrideAccess: false,
   });
-
-  return foundDoc;
 }
 export async function traverseLexicalField(
   node: SerializedLexicalNode,
   locale: string,
+  parentId?: string,
 ): Promise<SerializedLexicalNode> {
   //Find replacements
   if (node.type === 'upload') {
@@ -83,13 +84,14 @@ export async function traverseLexicalField(
     }
   } else if (
     node.type === 'link' &&
-    node['linkType'] &&
-    node['linkType'] === 'internal'
+    node['attributes']['linkType'] &&
+    node['attributes']['linkType'] === 'internal' &&
+    node['attributes']['doc']['value'] !== parentId
   ) {
     const doc: {
       value: string;
       relationTo: string;
-    } = node['doc'];
+    } = node['attributes']['doc'];
 
     const foundDoc = await loadInternalLinkDocData(
       doc.value,
@@ -97,7 +99,7 @@ export async function traverseLexicalField(
       locale,
     );
     if (foundDoc) {
-      node['doc']['data'] = foundDoc;
+      node['attributes']['doc']['data'] = foundDoc;
     }
   }
 
@@ -105,7 +107,7 @@ export async function traverseLexicalField(
   if (node['children'] && node['children'].length > 0) {
     let newChildren = [];
     for (let childNode of node['children']) {
-      newChildren.push(await traverseLexicalField(childNode, locale));
+      newChildren.push(await traverseLexicalField(childNode, locale, parentId));
     }
     node['children'] = newChildren;
   }

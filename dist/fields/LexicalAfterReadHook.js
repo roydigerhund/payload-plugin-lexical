@@ -15,15 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.traverseLexicalField = exports.populateLexicalRelationships = void 0;
 const PayloadLexicalRichTextFieldComponent_1 = require("./LexicalRichText/PayloadLexicalRichTextFieldComponent");
 const payload_1 = __importDefault(require("payload"));
-const populateLexicalRelationships = ({ value, req, }) => __awaiter(void 0, void 0, void 0, function* () {
+const populateLexicalRelationships = ({ value, req, data, }) => __awaiter(void 0, void 0, void 0, function* () {
     if (!value) {
         return value;
     }
+    const parentId = data === null || data === void 0 ? void 0 : data.id;
     const jsonContent = (0, PayloadLexicalRichTextFieldComponent_1.getJsonContentFromValue)(value);
     if (jsonContent && jsonContent.root && jsonContent.root.children) {
         const newChildren = [];
         for (let childNode of jsonContent.root.children) {
-            newChildren.push(yield traverseLexicalField(childNode, ''));
+            newChildren.push(yield traverseLexicalField(childNode, '', parentId));
         }
         jsonContent.root.children = newChildren;
     }
@@ -36,24 +37,24 @@ function loadUploadData(rawImagePayload, locale) {
         return yield payload_1.default.findByID({
             collection: rawImagePayload.relationTo,
             id: rawImagePayload.value.id,
-            depth: 2,
+            depth: 1,
             locale: locale,
         });
     });
 }
 function loadInternalLinkDocData(value, relationTo, locale) {
     return __awaiter(this, void 0, void 0, function* () {
-        //TODO: Adjustable depth
-        const foundDoc = yield payload_1.default.findByID({
+        return yield payload_1.default.findByID({
             collection: relationTo,
             id: value,
-            depth: 2,
+            depth: 1,
             locale: locale,
+            user: 'link-relation',
+            overrideAccess: false,
         });
-        return foundDoc;
     });
 }
-function traverseLexicalField(node, locale) {
+function traverseLexicalField(node, locale, parentId) {
     return __awaiter(this, void 0, void 0, function* () {
         //Find replacements
         if (node.type === 'upload') {
@@ -65,19 +66,20 @@ function traverseLexicalField(node, locale) {
             }
         }
         else if (node.type === 'link' &&
-            node['linkType'] &&
-            node['linkType'] === 'internal') {
-            const doc = node['doc'];
+            node['attributes']['linkType'] &&
+            node['attributes']['linkType'] === 'internal' &&
+            node['attributes']['doc']['value'] !== parentId) {
+            const doc = node['attributes']['doc'];
             const foundDoc = yield loadInternalLinkDocData(doc.value, doc.relationTo, locale);
             if (foundDoc) {
-                node['doc']['data'] = foundDoc;
+                node['attributes']['doc']['data'] = foundDoc;
             }
         }
         //Run for its children
         if (node['children'] && node['children'].length > 0) {
             let newChildren = [];
             for (let childNode of node['children']) {
-                newChildren.push(yield traverseLexicalField(childNode, locale));
+                newChildren.push(yield traverseLexicalField(childNode, locale, parentId));
             }
             node['children'] = newChildren;
         }
