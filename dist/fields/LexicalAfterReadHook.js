@@ -23,7 +23,7 @@ const populateLexicalRelationships = ({ value, req, data, }) => __awaiter(void 0
     if (jsonContent && jsonContent.root && jsonContent.root.children) {
         const newChildren = [];
         for (let childNode of jsonContent.root.children) {
-            newChildren.push(yield traverseLexicalField(childNode, '', data));
+            newChildren.push(yield traverseLexicalField(childNode, ''));
         }
         jsonContent.root.children = newChildren;
     }
@@ -53,7 +53,7 @@ function loadInternalLinkDocData(value, relationTo, locale) {
         });
     });
 }
-function traverseLexicalField(node, locale, parent) {
+function traverseLexicalField(node, locale) {
     return __awaiter(this, void 0, void 0, function* () {
         //Find replacements
         if (node.type === 'upload') {
@@ -68,9 +68,7 @@ function traverseLexicalField(node, locale, parent) {
             node['attributes']['linkType'] &&
             node['attributes']['linkType'] === 'internal') {
             const doc = node['attributes']['doc'];
-            const foundDoc = node['attributes']['doc']['value'] === (parent === null || parent === void 0 ? void 0 : parent.id)
-                ? { linkToSelf: true }
-                : yield loadInternalLinkDocData(doc.value, doc.relationTo, locale);
+            const foundDoc = yield loadInternalLinkDocData(doc.value, doc.relationTo, locale);
             if (foundDoc) {
                 node['attributes']['doc']['data'] = foundDoc;
             }
@@ -79,7 +77,7 @@ function traverseLexicalField(node, locale, parent) {
         if (node['children'] && node['children'].length > 0) {
             let newChildren = [];
             for (let childNode of node['children']) {
-                newChildren.push(yield traverseLexicalField(childNode, locale, parent));
+                newChildren.push(yield traverseLexicalField(childNode, locale));
             }
             node['children'] = newChildren;
         }

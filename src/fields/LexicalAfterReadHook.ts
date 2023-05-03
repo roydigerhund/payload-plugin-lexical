@@ -33,7 +33,7 @@ export const populateLexicalRelationships: LexicalRichTextFieldAfterReadFieldHoo
     if (jsonContent && jsonContent.root && jsonContent.root.children) {
       const newChildren = [];
       for (let childNode of jsonContent.root.children) {
-        newChildren.push(await traverseLexicalField(childNode, '', data));
+        newChildren.push(await traverseLexicalField(childNode, ''));
       }
       jsonContent.root.children = newChildren;
     }
@@ -71,7 +71,6 @@ async function loadInternalLinkDocData(
 export async function traverseLexicalField(
   node: SerializedLexicalNode,
   locale: string,
-  parent?: any,
 ): Promise<SerializedLexicalNode> {
   //Find replacements
   if (node.type === 'upload') {
@@ -91,10 +90,11 @@ export async function traverseLexicalField(
       relationTo: string;
     } = node['attributes']['doc'];
 
-    const foundDoc =
-      node['attributes']['doc']['value'] === parent?.id
-        ? { linkToSelf: true }
-        : await loadInternalLinkDocData(doc.value, doc.relationTo, locale);
+    const foundDoc = await loadInternalLinkDocData(
+      doc.value,
+      doc.relationTo,
+      locale,
+    );
     if (foundDoc) {
       node['attributes']['doc']['data'] = foundDoc;
     }
@@ -104,7 +104,7 @@ export async function traverseLexicalField(
   if (node['children'] && node['children'].length > 0) {
     let newChildren = [];
     for (let childNode of node['children']) {
-      newChildren.push(await traverseLexicalField(childNode, locale, parent));
+      newChildren.push(await traverseLexicalField(childNode, locale));
     }
     node['children'] = newChildren;
   }
