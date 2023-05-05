@@ -79,7 +79,14 @@ function LinkEditor({ editor, isLink, setIsLink, anchorElem, }) {
     const { t } = (0, react_i18next_1.useTranslation)('fields');
     const [initialState, setInitialState] = (0, react_1.useState)({});
     const [fieldSchema] = (0, react_1.useState)(() => {
-        const fields = [...(0, baseFields_1.getBaseFields)(config).filter(f => !('name' in f) || f.name !== 'newTab')];
+        const fields = [...(0, baseFields_1.getBaseFields)(config).map(f => {
+                if ('name' in f && f.name === 'doc') {
+                    return Object.assign(Object.assign({}, f), { 
+                        // TODO make this configurable
+                        relationTo: ['articles', 'pages', 'categories'] });
+                }
+                return f;
+            }).filter(f => !('name' in f) || f.name !== 'newTab')];
         if (customFieldSchema) {
             fields.push({
                 name: 'fields',

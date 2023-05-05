@@ -80,7 +80,17 @@ function LinkEditor({
 
   const [initialState, setInitialState] = useState<Fields>({});
   const [fieldSchema] = useState(() => {
-    const fields: Field[] = [...getBaseFields(config).filter(f => !('name' in f) || f.name !== 'newTab')];
+
+    const fields: Field[] = [...getBaseFields(config).map(f => {
+      if ('name' in f && f.name === 'doc') {
+        return  {
+          ...f,
+          // TODO make this configurable
+          relationTo: ['articles', 'pages', 'categories']
+        } as Field;
+      }
+      return f;
+    }).filter(f => !('name' in f) || f.name !== 'newTab')];
 
     if (customFieldSchema) {
       fields.push({
