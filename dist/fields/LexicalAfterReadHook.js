@@ -33,24 +33,36 @@ const populateLexicalRelationships = ({ value, req, data, }) => __awaiter(void 0
 exports.populateLexicalRelationships = populateLexicalRelationships;
 function loadUploadData(rawImagePayload, locale) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield payload_1.default.findByID({
-            collection: rawImagePayload.relationTo,
-            id: rawImagePayload.value.id,
-            depth: 1,
-            locale: locale,
-        });
+        try {
+            return yield payload_1.default.findByID({
+                collection: rawImagePayload.relationTo,
+                id: rawImagePayload.value.id,
+                depth: 1,
+                locale: locale,
+            });
+        }
+        catch (e) {
+            console.log('Error loading upload data', e);
+            return null;
+        }
     });
 }
 function loadInternalLinkDocData(value, relationTo, locale) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield payload_1.default.findByID({
-            collection: relationTo,
-            id: value,
-            depth: 1,
-            locale: locale,
-            user: 'link-relation',
-            overrideAccess: false,
-        });
+        try {
+            return yield payload_1.default.findByID({
+                collection: relationTo,
+                id: value,
+                depth: 1,
+                locale: locale,
+                user: 'link-relation',
+                overrideAccess: false,
+            });
+        }
+        catch (e) {
+            console.log('Error loading internal link doc data', e);
+            return null;
+        }
     });
 }
 function traverseLexicalField(node, locale) {

@@ -46,12 +46,17 @@ async function loadUploadData(
   rawImagePayload: RawImagePayload,
   locale: string,
 ) {
-  return await payload.findByID({
-    collection: rawImagePayload.relationTo, // required
-    id: rawImagePayload.value.id, // required
-    depth: 1,
-    locale: locale,
-  });
+  try {
+    return await payload.findByID({
+      collection: rawImagePayload.relationTo, // required
+      id: rawImagePayload.value.id, // required
+      depth: 1,
+      locale: locale,
+    });
+  } catch (e) {
+    console.log('Error loading upload data', e);
+    return null;
+  }
 }
 
 async function loadInternalLinkDocData(
@@ -59,14 +64,19 @@ async function loadInternalLinkDocData(
   relationTo: string,
   locale: string,
 ) {
-  return await payload.findByID({
-    collection: relationTo, // required
-    id: value, // required
-    depth: 1,
-    locale: locale,
-    user: 'link-relation',
-    overrideAccess: false,
-  });
+  try {
+    return await payload.findByID({
+      collection: relationTo, // required
+      id: value, // required
+      depth: 1,
+      locale: locale,
+      user: 'link-relation',
+      overrideAccess: false,
+    });
+  } catch (e) {
+    console.log('Error loading internal link doc data', e);
+    return null;
+  }
 }
 export async function traverseLexicalField(
   node: SerializedLexicalNode,
