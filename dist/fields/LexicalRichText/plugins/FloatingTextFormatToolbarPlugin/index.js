@@ -72,27 +72,29 @@ function TextFormatFloatingToolbar({ editor, anchorElem, isLink, isBold, isItali
     const insertComment = () => {
         editor.dispatchCommand(CommentPlugin_1.INSERT_INLINE_COMMAND, undefined);
     };
-    function mouseMoveListener(e) {
-        if ((popupCharStylesEditorRef === null || popupCharStylesEditorRef === void 0 ? void 0 : popupCharStylesEditorRef.current) &&
-            (e.buttons === 1 || e.buttons === 3)) {
-            popupCharStylesEditorRef.current.style.pointerEvents = 'none';
-        }
-    }
-    function mouseUpListener(e) {
-        if (popupCharStylesEditorRef === null || popupCharStylesEditorRef === void 0 ? void 0 : popupCharStylesEditorRef.current) {
-            popupCharStylesEditorRef.current.style.pointerEvents = 'auto';
-        }
-    }
-    (0, react_1.useEffect)(() => {
-        if (popupCharStylesEditorRef === null || popupCharStylesEditorRef === void 0 ? void 0 : popupCharStylesEditorRef.current) {
-            document.addEventListener('mousemove', mouseMoveListener);
-            document.addEventListener('mouseup', mouseUpListener);
-            return () => {
-                document.removeEventListener('mousemove', mouseMoveListener);
-                document.removeEventListener('mouseup', mouseUpListener);
-            };
-        }
-    }, [popupCharStylesEditorRef]);
+    // function mouseMoveListener(e: MouseEvent) {
+    //   if (
+    //     popupCharStylesEditorRef?.current &&
+    //     (e.buttons === 1 || e.buttons === 3)
+    //   ) {
+    //     popupCharStylesEditorRef.current.style.pointerEvents = 'none';
+    //   }
+    // }
+    // function mouseUpListener(e: MouseEvent) {
+    //   if (popupCharStylesEditorRef?.current) {
+    //     popupCharStylesEditorRef.current.style.pointerEvents = 'auto';
+    //   }
+    // }
+    // useEffect(() => {
+    //   if (popupCharStylesEditorRef?.current) {
+    //     document.addEventListener('mousemove', mouseMoveListener);
+    //     document.addEventListener('mouseup', mouseUpListener);
+    //     return () => {
+    //       document.removeEventListener('mousemove', mouseMoveListener);
+    //       document.removeEventListener('mouseup', mouseUpListener);
+    //     };
+    //   }
+    // }, [popupCharStylesEditorRef]);
     const updateTextFormatFloatingToolbar = (0, react_1.useCallback)(() => {
         const selection = (0, lexical_1.$getSelection)();
         const popupCharStylesEditorElem = popupCharStylesEditorRef.current;

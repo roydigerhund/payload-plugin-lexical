@@ -513,7 +513,7 @@ function ToolbarPlugin(props) {
             rootType === 'table' &&
                 editorConfig.toggles.tables.enabled &&
                 editorConfig.toggles.tables.display && (React.createElement(React.Fragment, null,
-                React.createElement(DropDown_1.default, { disabled: !isEditable, buttonClassName: "toolbar-item spaced", buttonLabel: "Table", buttonAriaLabel: "Open table toolkit", buttonIconClassName: "icon table secondary" },
+                React.createElement(DropDown_1.default, { disabled: !isEditable, buttonClassName: "toolbar-item spaced", buttonLabel: "Table", buttonAriaLabel: "Open table toolkit", buttonIconClassName: "icon table-icon secondary" },
                     React.createElement(DropDown_1.DropDownItem, { onClick: () => {
                             /**/
                         }, className: "item" },

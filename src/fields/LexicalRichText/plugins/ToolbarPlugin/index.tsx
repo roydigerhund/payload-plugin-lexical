@@ -925,7 +925,7 @@ export default function ToolbarPlugin(props: {
                   buttonClassName="toolbar-item spaced"
                   buttonLabel="Table"
                   buttonAriaLabel="Open table toolkit"
-                  buttonIconClassName="icon table secondary">
+                  buttonIconClassName="icon table-icon secondary">
                   <DropDownItem
                     onClick={() => {
                       /**/
