@@ -349,6 +349,46 @@ function TableActionMenu({
     });
   }, [editor, onClose]);
 
+  const toggleBackgroundColor = useCallback(() => {
+    editor.update(() => {
+      const tableNode = $getTableNodeFromLexicalNodeOrThrow(tableCellNode);
+
+      const tableRowIndex = $getTableRowIndexFromTableCellNode(tableCellNode);
+      const tableColumnIndex = $getTableColumnIndexFromTableCellNode(tableCellNode);
+
+      const tableRows = tableNode.getChildren();
+
+      if (tableRowIndex >= tableRows.length || tableRowIndex < 0) {
+        throw new Error('Expected table cell to be inside of table row.');
+      }
+
+      const tableRow = tableRows[tableRowIndex];
+
+      if (!$isTableRowNode(tableRow)) {
+        throw new Error('Expected table row');
+      }
+
+      const tableCells = tableRow.getChildren();
+
+      if (tableColumnIndex >= tableCells.length || tableColumnIndex < 0) {
+        throw new Error('Expected table cell to be inside of table row.');
+      }
+
+      const tableCell = tableCells[tableColumnIndex];
+
+      if (!$isTableCellNode(tableCell)) {
+        throw new Error('Expected table cell');
+      }
+
+      const currentBgColor = tableCell.getBackgroundColor();
+
+      tableCell.setBackgroundColor(currentBgColor ? null : '#ff0000');      
+
+      clearTableSelection();
+      onClose();
+    });
+  }, [editor, tableCellNode, clearTableSelection, onClose]);
+
   const toggleTableRowIsHeader = useCallback(() => {
     editor.update(() => {
       const tableNode = $getTableNodeFromLexicalNodeOrThrow(tableCellNode);
@@ -516,6 +556,12 @@ function TableActionMenu({
         onClick={() => deleteTableAtSelection()}
         data-test-id="table-delete">
         <span className="text">Delete table</span>
+      </button>
+      <hr />
+      <button className="item" onClick={() => toggleBackgroundColor()}>
+        <span className="text">
+          Add Color to Cell
+        </span>
       </button>
       <hr />
       <button className="item" onClick={() => toggleTableRowIsHeader()}>

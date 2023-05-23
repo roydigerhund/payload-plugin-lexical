@@ -269,6 +269,33 @@ function TableActionMenu({ onClose, tableCellNode: _tableCellNode, setIsMenuOpen
             onClose();
         });
     }, [editor, onClose]);
+    const toggleBackgroundColor = (0, react_1.useCallback)(() => {
+        editor.update(() => {
+            const tableNode = (0, table_1.$getTableNodeFromLexicalNodeOrThrow)(tableCellNode);
+            const tableRowIndex = (0, table_1.$getTableRowIndexFromTableCellNode)(tableCellNode);
+            const tableColumnIndex = (0, table_1.$getTableColumnIndexFromTableCellNode)(tableCellNode);
+            const tableRows = tableNode.getChildren();
+            if (tableRowIndex >= tableRows.length || tableRowIndex < 0) {
+                throw new Error('Expected table cell to be inside of table row.');
+            }
+            const tableRow = tableRows[tableRowIndex];
+            if (!(0, table_1.$isTableRowNode)(tableRow)) {
+                throw new Error('Expected table row');
+            }
+            const tableCells = tableRow.getChildren();
+            if (tableColumnIndex >= tableCells.length || tableColumnIndex < 0) {
+                throw new Error('Expected table cell to be inside of table row.');
+            }
+            const tableCell = tableCells[tableColumnIndex];
+            if (!(0, table_1.$isTableCellNode)(tableCell)) {
+                throw new Error('Expected table cell');
+            }
+            const currentBgColor = tableCell.getBackgroundColor();
+            tableCell.setBackgroundColor(currentBgColor ? null : '#ff0000');
+            clearTableSelection();
+            onClose();
+        });
+    }, [editor, tableCellNode, clearTableSelection, onClose]);
     const toggleTableRowIsHeader = (0, react_1.useCallback)(() => {
         editor.update(() => {
             const tableNode = (0, table_1.$getTableNodeFromLexicalNodeOrThrow)(tableCellNode);
@@ -372,6 +399,9 @@ function TableActionMenu({ onClose, tableCellNode: _tableCellNode, setIsMenuOpen
             React.createElement("span", { className: "text" }, "Delete row")),
         React.createElement("button", { className: "item", onClick: () => deleteTableAtSelection(), "data-test-id": "table-delete" },
             React.createElement("span", { className: "text" }, "Delete table")),
+        React.createElement("hr", null),
+        React.createElement("button", { className: "item", onClick: () => toggleBackgroundColor() },
+            React.createElement("span", { className: "text" }, "Add Color to Cell")),
         React.createElement("hr", null),
         React.createElement("button", { className: "item", onClick: () => toggleTableRowIsHeader() },
             React.createElement("span", { className: "text" },
