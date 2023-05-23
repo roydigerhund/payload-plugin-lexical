@@ -445,7 +445,6 @@ function ToolbarPlugin(props) {
         });
     }, [activeEditor, selectedElementKey]);
     return (React.createElement("div", { className: "toolbar" },
-        React.createElement(Divider, null),
         !!((_a = editorConfig.toggles.blocks) === null || _a === void 0 ? void 0 : _a.length) &&
             blockType in blockTypeToBlockName &&
             activeEditor === editor && (React.createElement(BlockFormatDropDown, { disabled: !isEditable, blockType: blockType, rootType: rootType, editor: editor, editorConfig: editorConfig })),
@@ -457,7 +456,7 @@ function ToolbarPlugin(props) {
                 editorConfig.toggles.font.display && (React.createElement(FontDropDown, { disabled: !isEditable, styleText: "font-family", value: fontFamily, editor: editor })),
             editorConfig.toggles.fontSize.enabled &&
                 editorConfig.toggles.fontSize.display && (React.createElement(FontDropDown, { disabled: !isEditable, styleText: "font-size", value: fontSize, editor: editor })),
-            React.createElement(Divider, null),
+            editorConfig.toggles.font.display || editorConfig.toggles.fontSize.display && React.createElement(Divider, null),
             React.createElement("button", { type: "button", disabled: !isEditable, onClick: (event) => {
                     event.preventDefault();
                     activeEditor.dispatchCommand(lexical_1.FORMAT_TEXT_COMMAND, 'bold');
@@ -518,7 +517,7 @@ function ToolbarPlugin(props) {
                     React.createElement(DropDown_1.DropDownItem, { onClick: () => {
                             /**/
                         }, className: "item" },
-                        React.createElement("span", { className: "text" }, "TODO"))),
+                        React.createElement("span", { className: "text" }, "TODO Table Stuff"))),
                 React.createElement(Divider, null))),
             React.createElement(DropDown_1.default, { disabled: !isEditable, buttonClassName: "toolbar-item spaced", buttonLabel: "Insert", buttonAriaLabel: "Insert specialized editor node", buttonIconClassName: "icon plus" },
                 editorConfig.toggles.upload.enabled &&
@@ -531,15 +530,8 @@ function ToolbarPlugin(props) {
                     editorConfig.toggles.tables.display && (React.createElement(DropDown_1.DropDownItem, { onClick: () => {
                         editor.dispatchCommand(ModalPlugin_1.OPEN_MODAL_COMMAND, 'table');
                     }, className: "item" },
-                    React.createElement("i", { className: "icon table" }),
-                    React.createElement("span", { className: "text" }, "Table"))) //TODO: Replace this with experimental table once not experimental anymore. Might be worth the wait as it's better, and its data structure is different */
-            ,
-                editorConfig.toggles.tables.enabled &&
-                    editorConfig.toggles.tables.display && (React.createElement(DropDown_1.DropDownItem, { onClick: () => {
-                        editor.dispatchCommand(ModalPlugin_1.OPEN_MODAL_COMMAND, 'newtable');
-                    }, className: "item" },
-                    React.createElement("i", { className: "icon table" }),
-                    React.createElement("span", { className: "text" }, "Table (Experimental)"))),
+                    React.createElement("i", { className: "icon table-icon" }),
+                    React.createElement("span", { className: "text" }, "Table"))),
                 (0, AutoEmbedPlugin_1.getEmbedConfigs)(editorConfig).map((embedConfig) => (React.createElement(DropDown_1.DropDownItem, { key: embedConfig.type, onClick: () => {
                         activeEditor.dispatchCommand(LexicalAutoEmbedPlugin_1.INSERT_EMBED_COMMAND, embedConfig.type);
                     }, className: "item" },

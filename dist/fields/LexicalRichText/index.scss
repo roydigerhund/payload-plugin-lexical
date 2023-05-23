@@ -378,7 +378,7 @@ i.link {
   background-image: url(images/icons/bg-color.svg);
 }
 
-.icon.table {
+.icon.table-icon {
   background-color: #6c757d;
   mask-image: url(images/icons/table.svg);
   -webkit-mask-image: url(images/icons/table.svg);
@@ -392,7 +392,7 @@ i.image {
   background-image: url(images/icons/file-image.svg);
 }
 
-i.table {
+i.table-icon {
   background-image: url(images/icons/table.svg);
   margin-bottom: unset;
   overflow: unset;
@@ -1033,7 +1033,7 @@ i.prettier-error {
   background-image: url(images/icons/file-image.svg);
 }
 
-.actions i.table {
+.actions i.table-icon {
   background-image: url(images/icons/table.svg);
 }
 

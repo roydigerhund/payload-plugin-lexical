@@ -712,7 +712,6 @@ export default function ToolbarPlugin(props: {
         aria-label="Redo">
         <i className="format redo" />
       </button> */}
-      <Divider />
       {!!editorConfig.toggles.blocks?.length &&
         blockType in blockTypeToBlockName &&
         activeEditor === editor && (
@@ -764,7 +763,7 @@ export default function ToolbarPlugin(props: {
               />
             )}
 
-          <Divider />
+          {editorConfig.toggles.font.display || editorConfig.toggles.fontSize.display && <Divider />}
           <button
             type="button"
             disabled={!isEditable}
@@ -932,7 +931,7 @@ export default function ToolbarPlugin(props: {
                       /**/
                     }}
                     className="item">
-                    <span className="text">TODO</span>
+                    <span className="text">TODO Table Stuff</span>
                   </DropDownItem>
                 </DropDown>
                 <Divider />
@@ -963,22 +962,22 @@ export default function ToolbarPlugin(props: {
                       editor.dispatchCommand(OPEN_MODAL_COMMAND, 'table');
                     }}
                     className="item">
-                    <i className="icon table" />
+                    <i className="icon table-icon" />
                     <span className="text">Table</span>
                   </DropDownItem>
-                ) //TODO: Replace this with experimental table once not experimental anymore. Might be worth the wait as it's better, and its data structure is different */
+                )
             }
-            {editorConfig.toggles.tables.enabled &&
+            {/* {editorConfig.toggles.tables.enabled &&
               editorConfig.toggles.tables.display && (
                 <DropDownItem
                   onClick={() => {
                     editor.dispatchCommand(OPEN_MODAL_COMMAND, 'newtable');
                   }}
                   className="item">
-                  <i className="icon table" />
+                  <i className="icon table-icon" />
                   <span className="text">Table (Experimental)</span>
                 </DropDownItem>
-              )}
+              )} */}
 
             {getEmbedConfigs(editorConfig).map((embedConfig) => (
               <DropDownItem

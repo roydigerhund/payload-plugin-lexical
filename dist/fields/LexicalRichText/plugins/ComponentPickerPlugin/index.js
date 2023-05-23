@@ -93,7 +93,7 @@ function ComponentPickerMenuPlugin(props) {
                 .split('x')
                 .map((n) => parseInt(n, 10));
             options.push(new ComponentPickerOption(`${rows}x${columns} Table`, {
-                icon: React.createElement("i", { className: "icon table" }),
+                icon: React.createElement("i", { className: "icon table-icon" }),
                 keywords: ['table'],
                 onSelect: () => 
                 // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
@@ -103,7 +103,7 @@ function ComponentPickerMenuPlugin(props) {
         else if (partialTableMatch) {
             const rows = parseInt(partialTableMatch[0], 10);
             options.push(...Array.from({ length: 5 }, (_, i) => i + 1).map((columns) => new ComponentPickerOption(`${rows}x${columns} Table`, {
-                icon: React.createElement("i", { className: "icon table" }),
+                icon: React.createElement("i", { className: "icon table-icon" }),
                 keywords: ['table'],
                 onSelect: () => 
                 // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
@@ -116,85 +116,103 @@ function ComponentPickerMenuPlugin(props) {
         // @ts-ignore
         // @ts-ignore
         const baseOptions = [];
-        baseOptions.push(new ComponentPickerOption('Paragraph', {
-            icon: React.createElement("i", { className: "icon paragraph" }),
-            keywords: ['normal', 'paragraph', 'p', 'text'],
-            onSelect: () => editor.update(() => {
-                const selection = (0, lexical_1.$getSelection)();
-                if ((0, lexical_1.$isRangeSelection)(selection)) {
-                    (0, selection_1.$setBlocksType)(selection, () => (0, lexical_1.$createParagraphNode)());
-                }
-            }),
-        }));
-        baseOptions.push(...Array.from({ length: 3 }, (_, i) => i + 1).map((n) => new ComponentPickerOption(`Heading ${n}`, {
-            icon: React.createElement("i", { className: `icon h${n}` }),
-            keywords: ['heading', 'header', `h${n}`],
-            onSelect: () => editor.update(() => {
-                const selection = (0, lexical_1.$getSelection)();
-                if ((0, lexical_1.$isRangeSelection)(selection)) {
-                    (0, selection_1.$setBlocksType)(selection, () => 
-                    // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
-                    (0, rich_text_1.$createHeadingNode)(`h${n}`));
-                }
-            }),
-        })));
+        if (editorConfig.toggles.blocks.includes('paragraph')) {
+            baseOptions.push(new ComponentPickerOption('Paragraph', {
+                icon: React.createElement("i", { className: "icon paragraph" }),
+                keywords: ['normal', 'paragraph', 'p', 'text'],
+                onSelect: () => editor.update(() => {
+                    const selection = (0, lexical_1.$getSelection)();
+                    if ((0, lexical_1.$isRangeSelection)(selection)) {
+                        (0, selection_1.$setBlocksType)(selection, () => (0, lexical_1.$createParagraphNode)());
+                    }
+                }),
+            }));
+        }
+        const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+        headings.forEach((heading) => {
+            if (editorConfig.toggles.blocks.includes(heading)) {
+                baseOptions.push(new ComponentPickerOption(`Heading ${heading.replace('h', '')}`, {
+                    icon: React.createElement("i", { className: `icon ${heading}` }),
+                    keywords: ['heading', 'header', heading],
+                    onSelect: () => editor.update(() => {
+                        const selection = (0, lexical_1.$getSelection)();
+                        if ((0, lexical_1.$isRangeSelection)(selection)) {
+                            (0, selection_1.$setBlocksType)(selection, () => (0, rich_text_1.$createHeadingNode)(heading));
+                        }
+                    }),
+                }));
+            }
+        });
         if (editorConfig.toggles.tables.enabled &&
             editorConfig.toggles.tables.display) {
             baseOptions.push(new ComponentPickerOption('Table', {
-                icon: React.createElement("i", { className: "icon table" }),
+                icon: React.createElement("i", { className: "icon table-icon" }),
                 keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
                 onSelect: () => editor.dispatchCommand(ModalPlugin_1.OPEN_MODAL_COMMAND, 'table'),
             }));
-            baseOptions.push(new ComponentPickerOption('Table (Experimental)', {
-                icon: React.createElement("i", { className: "icon table" }),
-                keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
-                onSelect: () => editor.dispatchCommand(ModalPlugin_1.OPEN_MODAL_COMMAND, 'newtable'),
+            // baseOptions.push(
+            //   new ComponentPickerOption('Table (Experimental)', {
+            //     icon: <i className="icon table-icon" />,
+            //     keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
+            //     onSelect: () =>
+            //       editor.dispatchCommand(OPEN_MODAL_COMMAND, 'newtable'),
+            //   }),
+            // );
+        }
+        if (editorConfig.toggles.blocks.includes('number')) {
+            baseOptions.push(new ComponentPickerOption('Numbered List', {
+                icon: React.createElement("i", { className: "icon number" }),
+                keywords: ['numbered list', 'ordered list', 'ol'],
+                onSelect: () => editor.dispatchCommand(list_1.INSERT_ORDERED_LIST_COMMAND, undefined),
             }));
         }
-        baseOptions.push(new ComponentPickerOption('Numbered List', {
-            icon: React.createElement("i", { className: "icon number" }),
-            keywords: ['numbered list', 'ordered list', 'ol'],
-            onSelect: () => editor.dispatchCommand(list_1.INSERT_ORDERED_LIST_COMMAND, undefined),
-        }));
-        baseOptions.push(new ComponentPickerOption('Bulleted List', {
-            icon: React.createElement("i", { className: "icon bullet" }),
-            keywords: ['bulleted list', 'unordered list', 'ul'],
-            onSelect: () => editor.dispatchCommand(list_1.INSERT_UNORDERED_LIST_COMMAND, undefined),
-        }));
-        baseOptions.push(new ComponentPickerOption('Check List', {
-            icon: React.createElement("i", { className: "icon check" }),
-            keywords: ['check list', 'todo list'],
-            onSelect: () => editor.dispatchCommand(list_1.INSERT_CHECK_LIST_COMMAND, undefined),
-        }));
-        baseOptions.push(new ComponentPickerOption('Quote', {
-            icon: React.createElement("i", { className: "icon quote" }),
-            keywords: ['block quote'],
-            onSelect: () => editor.update(() => {
-                const selection = (0, lexical_1.$getSelection)();
-                if ((0, lexical_1.$isRangeSelection)(selection)) {
-                    (0, selection_1.$setBlocksType)(selection, () => (0, rich_text_1.$createQuoteNode)());
-                }
-            }),
-        }));
-        baseOptions.push(new ComponentPickerOption('Code', {
-            icon: React.createElement("i", { className: "icon code" }),
-            keywords: ['javascript', 'python', 'js', 'codeblock'],
-            onSelect: () => editor.update(() => {
-                const selection = (0, lexical_1.$getSelection)();
-                if ((0, lexical_1.$isRangeSelection)(selection)) {
-                    if (selection.isCollapsed()) {
-                        (0, selection_1.$setBlocksType)(selection, () => (0, code_1.$createCodeNode)());
+        if (editorConfig.toggles.blocks.includes('bullet')) {
+            baseOptions.push(new ComponentPickerOption('Bulleted List', {
+                icon: React.createElement("i", { className: "icon bullet" }),
+                keywords: ['bulleted list', 'unordered list', 'ul'],
+                onSelect: () => editor.dispatchCommand(list_1.INSERT_UNORDERED_LIST_COMMAND, undefined),
+            }));
+        }
+        if (editorConfig.toggles.blocks.includes('check')) {
+            baseOptions.push(new ComponentPickerOption('Check List', {
+                icon: React.createElement("i", { className: "icon check" }),
+                keywords: ['check list', 'todo list'],
+                onSelect: () => editor.dispatchCommand(list_1.INSERT_CHECK_LIST_COMMAND, undefined),
+            }));
+        }
+        if (editorConfig.toggles.blocks.includes('quote')) {
+            baseOptions.push(new ComponentPickerOption('Quote', {
+                icon: React.createElement("i", { className: "icon quote" }),
+                keywords: ['block quote'],
+                onSelect: () => editor.update(() => {
+                    const selection = (0, lexical_1.$getSelection)();
+                    if ((0, lexical_1.$isRangeSelection)(selection)) {
+                        (0, selection_1.$setBlocksType)(selection, () => (0, rich_text_1.$createQuoteNode)());
                     }
-                    else {
-                        // Will this ever happen?
-                        const textContent = selection.getTextContent();
-                        const codeNode = (0, code_1.$createCodeNode)();
-                        selection.insertNodes([codeNode]);
-                        selection.insertRawText(textContent);
+                }),
+            }));
+        }
+        if (editorConfig.toggles.blocks.includes('code')) {
+            baseOptions.push(new ComponentPickerOption('Code', {
+                icon: React.createElement("i", { className: "icon code" }),
+                keywords: ['javascript', 'python', 'js', 'codeblock'],
+                onSelect: () => editor.update(() => {
+                    const selection = (0, lexical_1.$getSelection)();
+                    if ((0, lexical_1.$isRangeSelection)(selection)) {
+                        if (selection.isCollapsed()) {
+                            (0, selection_1.$setBlocksType)(selection, () => (0, code_1.$createCodeNode)());
+                        }
+                        else {
+                            // Will this ever happen?
+                            const textContent = selection.getTextContent();
+                            const codeNode = (0, code_1.$createCodeNode)();
+                            selection.insertNodes([codeNode]);
+                            selection.insertRawText(textContent);
+                        }
                     }
-                }
-            }),
-        }));
+                }),
+            }));
+        }
         baseOptions.push(...(0, AutoEmbedPlugin_1.getEmbedConfigs)(editorConfig).map((embedConfig) => new ComponentPickerOption(`Embed ${embedConfig.contentName}`, {
             icon: embedConfig.icon,
             keywords: [...embedConfig.keywords, 'embed'],
