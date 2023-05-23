@@ -246,6 +246,7 @@ function FontDropDown({ editor, value, styleText, disabled = false, }) {
         React.createElement("span", { className: "text" }, text))))));
 }
 function ToolbarPlugin(props) {
+    var _a;
     const editorConfig = props.editorConfig;
     const [editor] = (0, LexicalComposerContext_1.useLexicalComposerContext)();
     const [activeEditor, setActiveEditor] = (0, react_1.useState)(editor);
@@ -444,20 +445,10 @@ function ToolbarPlugin(props) {
         });
     }, [activeEditor, selectedElementKey]);
     return (React.createElement("div", { className: "toolbar" },
-        React.createElement("button", { type: "button", disabled: !canUndo || !isEditable, onClick: (event) => {
-                event.preventDefault();
-                activeEditor.dispatchCommand(lexical_1.UNDO_COMMAND, undefined);
-            }, title: environment_1.IS_APPLE ? 'Undo (⌘Z)' : 'Undo (Ctrl+Z)', className: "toolbar-item spaced", "aria-label": "Undo" },
-            React.createElement("i", { className: "format undo" })),
-        React.createElement("button", { type: "button", disabled: !canRedo || !isEditable, onClick: (event) => {
-                event.preventDefault();
-                activeEditor.dispatchCommand(lexical_1.REDO_COMMAND, undefined);
-            }, title: environment_1.IS_APPLE ? 'Redo (⌘Y)' : 'Redo (Ctrl+Y)', className: "toolbar-item", "aria-label": "Redo" },
-            React.createElement("i", { className: "format redo" })),
         React.createElement(Divider, null),
-        blockType in blockTypeToBlockName && activeEditor === editor && (React.createElement(React.Fragment, null,
-            React.createElement(BlockFormatDropDown, { disabled: !isEditable, blockType: blockType, rootType: rootType, editor: editor, editorConfig: editorConfig }),
-            React.createElement(Divider, null))),
+        !!((_a = editorConfig.toggles.blocks) === null || _a === void 0 ? void 0 : _a.length) &&
+            blockType in blockTypeToBlockName &&
+            activeEditor === editor && (React.createElement(BlockFormatDropDown, { disabled: !isEditable, blockType: blockType, rootType: rootType, editor: editor, editorConfig: editorConfig })),
         blockType === 'code' ? (React.createElement(DropDown_1.default, { disabled: !isEditable, buttonClassName: "toolbar-item code-language", buttonLabel: (0, code_1.getLanguageFriendlyName)(codeLanguage), buttonAriaLabel: "Select language" }, CODE_LANGUAGE_OPTIONS.map(([value, name]) => {
             return (React.createElement(DropDown_1.DropDownItem, { className: `item ${dropDownActiveClass(value === codeLanguage)}`, onClick: () => onCodeLanguageSelect(value), key: value },
                 React.createElement("span", { className: "text" }, name)));
@@ -482,11 +473,6 @@ function ToolbarPlugin(props) {
                     activeEditor.dispatchCommand(lexical_1.FORMAT_TEXT_COMMAND, 'underline');
                 }, className: `toolbar-item spaced ${isUnderline ? 'active' : ''}`, title: environment_1.IS_APPLE ? 'Underline (⌘U)' : 'Underline (Ctrl+U)', "aria-label": `Format text to underlined. Shortcut: ${environment_1.IS_APPLE ? '⌘U' : 'Ctrl+U'}` },
                 React.createElement("i", { className: "format underline" })),
-            React.createElement("button", { type: "button", disabled: !isEditable, onClick: (event) => {
-                    event.preventDefault();
-                    activeEditor.dispatchCommand(lexical_1.FORMAT_TEXT_COMMAND, 'code');
-                }, className: `toolbar-item spaced ${isCode ? 'active' : ''}`, title: "Insert code block", "aria-label": "Insert code block" },
-                React.createElement("i", { className: "format code" })),
             editorConfig.features.map((feature) => {
                 var _a, _b;
                 if (feature.toolbar && feature.toolbar.normal) {

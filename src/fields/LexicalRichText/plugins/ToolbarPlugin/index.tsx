@@ -688,7 +688,7 @@ export default function ToolbarPlugin(props: {
 
   return (
     <div className="toolbar">
-      <button
+      {/* <button
         type="button"
         disabled={!canUndo || !isEditable}
         onClick={(event) => {
@@ -711,10 +711,11 @@ export default function ToolbarPlugin(props: {
         className="toolbar-item"
         aria-label="Redo">
         <i className="format redo" />
-      </button>
+      </button> */}
       <Divider />
-      {blockType in blockTypeToBlockName && activeEditor === editor && (
-        <React.Fragment>
+      {!!editorConfig.toggles.blocks?.length &&
+        blockType in blockTypeToBlockName &&
+        activeEditor === editor && (
           <BlockFormatDropDown
             disabled={!isEditable}
             blockType={blockType}
@@ -722,9 +723,7 @@ export default function ToolbarPlugin(props: {
             editor={editor}
             editorConfig={editorConfig}
           />
-          <Divider />
-        </React.Fragment>
-      )}
+        )}
       {blockType === 'code' ? (
         <DropDown
           disabled={!isEditable}
@@ -808,7 +807,7 @@ export default function ToolbarPlugin(props: {
             }`}>
             <i className="format underline" />
           </button>
-          <button
+          {/* <button
             type="button"
             disabled={!isEditable}
             onClick={(event) => {
@@ -819,7 +818,7 @@ export default function ToolbarPlugin(props: {
             title="Insert code block"
             aria-label="Insert code block">
             <i className="format code" />
-          </button>
+          </button> */}
 
           {editorConfig.features.map((feature) => {
             if (feature.toolbar && feature.toolbar.normal) {

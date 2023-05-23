@@ -172,11 +172,6 @@ function TextFormatFloatingToolbar({ editor, anchorElem, isLink, isBold, isItali
                 editor.dispatchCommand(lexical_1.FORMAT_TEXT_COMMAND, 'superscript');
             }, className: `popup-item spaced ${isSuperscript ? 'active' : ''}`, title: "Superscript", "aria-label": "Format Superscript" },
             React.createElement("i", { className: "format superscript" })),
-        React.createElement("button", { onClick: (event) => {
-                event.preventDefault();
-                editor.dispatchCommand(lexical_1.FORMAT_TEXT_COMMAND, 'code');
-            }, className: `popup-item spaced ${isCode ? 'active' : ''}`, "aria-label": "Insert code block" },
-            React.createElement("i", { className: "format code" })),
         React.createElement("button", { onClick: insertLink, className: 'popup-item spaced ' + (isLink ? 'active' : ''), "aria-label": "Insert link", title: "Insert link", type: "button" },
             React.createElement("i", { className: "format link" })),
         editorConfig.features.map((feature) => {

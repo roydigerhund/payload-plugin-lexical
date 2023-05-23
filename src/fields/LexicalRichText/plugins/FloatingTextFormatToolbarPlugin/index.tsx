@@ -245,7 +245,7 @@ function TextFormatFloatingToolbar({
             aria-label="Format Superscript">
             <i className="format superscript" />
           </button>
-          <button
+          {/* <button
             onClick={(event) => {
               event.preventDefault();
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
@@ -253,7 +253,7 @@ function TextFormatFloatingToolbar({
             className={`popup-item spaced ${isCode ? 'active' : ''}`}
             aria-label="Insert code block">
             <i className="format code" />
-          </button>
+          </button> */}
           <button
             onClick={insertLink}
             className={'popup-item spaced ' + (isLink ? 'active' : '')}
