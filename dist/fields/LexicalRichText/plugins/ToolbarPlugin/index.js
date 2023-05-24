@@ -444,6 +444,21 @@ function ToolbarPlugin(props) {
             }
         });
     }, [activeEditor, selectedElementKey]);
+    const toggleBackgroundColor = (0, react_1.useCallback)(() => {
+        editor.update(() => {
+            // get tableCell
+            const selection = (0, lexical_1.$getSelection)();
+            if (!(0, lexical_1.$isRangeSelection)(selection)) {
+                return;
+            }
+            const tableCell = (0, utils_1.$getNearestNodeOfType)(selection.anchor.getNode(), table_1.TableCellNode);
+            if (!(0, table_1.$isTableCellNode)(tableCell)) {
+                throw new Error('Expected table cell');
+            }
+            const currentBgColor = tableCell.getBackgroundColor();
+            tableCell.setBackgroundColor(currentBgColor ? null : '#ff0000');
+        });
+    }, [editor]);
     return (React.createElement("div", { className: "toolbar" },
         !!((_a = editorConfig.toggles.blocks) === null || _a === void 0 ? void 0 : _a.length) &&
             blockType in blockTypeToBlockName &&
@@ -515,7 +530,7 @@ function ToolbarPlugin(props) {
                 editorConfig.toggles.tables.display && (React.createElement(React.Fragment, null,
                 React.createElement(DropDown_1.default, { disabled: !isEditable, buttonClassName: "toolbar-item spaced", buttonLabel: "Table", buttonAriaLabel: "Open table toolkit", buttonIconClassName: "icon table-icon secondary" },
                     React.createElement(DropDown_1.DropDownItem, { onClick: () => {
-                            /**/
+                            toggleBackgroundColor();
                         }, className: "item" },
                         React.createElement("span", { className: "text" }, "TODO Table Stuff"))),
                 React.createElement(Divider, null))),

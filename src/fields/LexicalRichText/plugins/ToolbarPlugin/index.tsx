@@ -39,7 +39,7 @@ import {
   $patchStyleText,
   $setBlocksType,
 } from '@lexical/selection';
-import { $isTableNode } from '@lexical/table';
+import { $getTableColumnIndexFromTableCellNode, $getTableNodeFromLexicalNodeOrThrow, $getTableRowIndexFromTableCellNode, $isTableCellNode, $isTableNode, $isTableRowNode, TableCellNode } from '@lexical/table';
 import {
   $findMatchingParent,
   $getNearestBlockElementAncestorOrThrow,
@@ -686,6 +686,30 @@ export default function ToolbarPlugin(props: {
     [activeEditor, selectedElementKey],
   );
 
+  const toggleBackgroundColor = useCallback(() => {
+    editor.update(() => {
+      // get tableCell
+      const selection = $getSelection();
+      if (!$isRangeSelection(selection)) {
+        return;
+      }
+
+      const tableCell = $getNearestNodeOfType<TableCellNode>(
+        selection.anchor.getNode(),
+        TableCellNode,
+      );
+
+      if (!$isTableCellNode(tableCell)) {
+        throw new Error('Expected table cell');
+      }
+
+      const currentBgColor = tableCell.getBackgroundColor();
+
+      tableCell.setBackgroundColor(currentBgColor ? null : '#ff0000');      
+
+    });
+  }, [editor]);
+
   return (
     <div className="toolbar">
       {/* <button
@@ -928,7 +952,7 @@ export default function ToolbarPlugin(props: {
                   buttonIconClassName="icon table-icon secondary">
                   <DropDownItem
                     onClick={() => {
-                      /**/
+                      toggleBackgroundColor();
                     }}
                     className="item">
                     <span className="text">TODO Table Stuff</span>

@@ -351,30 +351,7 @@ function TableActionMenu({
 
   const toggleBackgroundColor = useCallback(() => {
     editor.update(() => {
-      const tableNode = $getTableNodeFromLexicalNodeOrThrow(tableCellNode);
-
-      const tableRowIndex = $getTableRowIndexFromTableCellNode(tableCellNode);
-      const tableColumnIndex = $getTableColumnIndexFromTableCellNode(tableCellNode);
-
-      const tableRows = tableNode.getChildren();
-
-      if (tableRowIndex >= tableRows.length || tableRowIndex < 0) {
-        throw new Error('Expected table cell to be inside of table row.');
-      }
-
-      const tableRow = tableRows[tableRowIndex];
-
-      if (!$isTableRowNode(tableRow)) {
-        throw new Error('Expected table row');
-      }
-
-      const tableCells = tableRow.getChildren();
-
-      if (tableColumnIndex >= tableCells.length || tableColumnIndex < 0) {
-        throw new Error('Expected table cell to be inside of table row.');
-      }
-
-      const tableCell = tableCells[tableColumnIndex];
+      const tableCell = tableCellNode;
 
       if (!$isTableCellNode(tableCell)) {
         throw new Error('Expected table cell');
