@@ -212,6 +212,7 @@ function TableActionMenu({
       const viewportHeight = window.innerHeight;
 
       dropDownElement.style.maxHeight = `${viewportHeight - menuButtonRect.top - 8}px`;
+      dropDownElement.style.overflowY = 'scroll';
     }
   }, [contextRef, dropDownRef]);
 
