@@ -39,7 +39,15 @@ import {
   $patchStyleText,
   $setBlocksType,
 } from '@lexical/selection';
-import { $getTableColumnIndexFromTableCellNode, $getTableNodeFromLexicalNodeOrThrow, $getTableRowIndexFromTableCellNode, $isTableCellNode, $isTableNode, $isTableRowNode, TableCellNode } from '@lexical/table';
+import {
+  $getTableColumnIndexFromTableCellNode,
+  $getTableNodeFromLexicalNodeOrThrow,
+  $getTableRowIndexFromTableCellNode,
+  $isTableCellNode,
+  $isTableNode,
+  $isTableRowNode,
+  TableCellNode,
+} from '@lexical/table';
 import {
   $findMatchingParent,
   $getNearestBlockElementAncestorOrThrow,
@@ -686,29 +694,31 @@ export default function ToolbarPlugin(props: {
     [activeEditor, selectedElementKey],
   );
 
-  const toggleBackgroundColor = useCallback(() => {
-    editor.update(() => {
-      // get tableCell
-      const selection = $getSelection();
-      if (!$isRangeSelection(selection)) {
-        return;
-      }
+  const setBackgroundColor = useCallback(
+    (color: string) => {
+      editor.update(() => {
+        // get tableCell
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection)) {
+          return;
+        }
 
-      const tableCell = $getNearestNodeOfType<TableCellNode>(
-        selection.anchor.getNode(),
-        TableCellNode,
-      );
+        const tableCell = $getNearestNodeOfType<TableCellNode>(
+          selection.anchor.getNode(),
+          TableCellNode,
+        );
 
-      if (!$isTableCellNode(tableCell)) {
-        throw new Error('Expected table cell');
-      }
+        if (!$isTableCellNode(tableCell)) {
+          throw new Error('Expected table cell');
+        }
 
-      const currentBgColor = tableCell.getBackgroundColor();
-
-      tableCell.setBackgroundColor(currentBgColor ? null : '#ff0000');      
-
-    });
-  }, [editor]);
+        tableCell.setBackgroundColor(
+          color === 'none' ? null : `var(--table-bg-${color})`,
+        );
+      });
+    },
+    [editor],
+  );
 
   return (
     <div className="toolbar">
@@ -787,7 +797,8 @@ export default function ToolbarPlugin(props: {
               />
             )}
 
-          {editorConfig.toggles.font.display || editorConfig.toggles.fontSize.display && <Divider />}
+          {editorConfig.toggles.font.display ||
+            (editorConfig.toggles.fontSize.display && <Divider />)}
           <button
             type="button"
             disabled={!isEditable}
@@ -947,16 +958,36 @@ export default function ToolbarPlugin(props: {
                 <DropDown
                   disabled={!isEditable}
                   buttonClassName="toolbar-item spaced"
-                  buttonLabel="Table"
-                  buttonAriaLabel="Open table toolkit"
-                  buttonIconClassName="icon table-icon secondary">
-                  <DropDownItem
-                    onClick={() => {
-                      toggleBackgroundColor();
-                    }}
-                    className="item">
-                    <span className="text">TODO Table Stuff</span>
-                  </DropDownItem>
+                  buttonAriaLabel="Open table bg color"
+                  buttonIconClassName="icon bg-color secondary">
+                  {[
+                    { label: 'None', key: 'none' },
+                    { label: 'Red', key: 'red' },
+                    { label: 'Yellow', key: 'yellow' },
+                    { label: 'Orange', key: 'orange' },
+                    { label: 'Green', key: 'green' },
+                    { label: 'Blue', key: 'blue' },
+                  ].map((color) => (
+                    <DropDownItem
+                      key={color.key}
+                      onClick={() => {
+                        setBackgroundColor(color.key);
+                      }}
+                      className="item">
+                      <span className="text" style={{ alignItems: 'center', gap: 6 }}>
+                        <span
+                          style={{
+                            width: 16,
+                            height: 16,
+                            borderRadius: 8,
+                            backgroundColor: `var(--table-bg-${color.key})`,
+                            border: '1px solid #777'
+                          }}
+                        />
+                        {color.label}
+                      </span>
+                    </DropDownItem>
+                  ))}
                 </DropDown>
                 <Divider />
               </>
@@ -978,19 +1009,17 @@ export default function ToolbarPlugin(props: {
                   <span className="text">Upload</span>
                 </DropDownItem>
               )}
-            {
-              editorConfig.toggles.tables.enabled &&
-                editorConfig.toggles.tables.display && (
-                  <DropDownItem
-                    onClick={() => {
-                      editor.dispatchCommand(OPEN_MODAL_COMMAND, 'table');
-                    }}
-                    className="item">
-                    <i className="icon table-icon" />
-                    <span className="text">Table</span>
-                  </DropDownItem>
-                )
-            }
+            {editorConfig.toggles.tables.enabled &&
+              editorConfig.toggles.tables.display && (
+                <DropDownItem
+                  onClick={() => {
+                    editor.dispatchCommand(OPEN_MODAL_COMMAND, 'table');
+                  }}
+                  className="item">
+                  <i className="icon table-icon" />
+                  <span className="text">Table</span>
+                </DropDownItem>
+              )}
             {/* {editorConfig.toggles.tables.enabled &&
               editorConfig.toggles.tables.display && (
                 <DropDownItem

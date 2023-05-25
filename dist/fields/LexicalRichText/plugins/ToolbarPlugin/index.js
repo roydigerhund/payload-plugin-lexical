@@ -444,7 +444,7 @@ function ToolbarPlugin(props) {
             }
         });
     }, [activeEditor, selectedElementKey]);
-    const toggleBackgroundColor = (0, react_1.useCallback)(() => {
+    const setBackgroundColor = (0, react_1.useCallback)((color) => {
         editor.update(() => {
             // get tableCell
             const selection = (0, lexical_1.$getSelection)();
@@ -455,8 +455,7 @@ function ToolbarPlugin(props) {
             if (!(0, table_1.$isTableCellNode)(tableCell)) {
                 throw new Error('Expected table cell');
             }
-            const currentBgColor = tableCell.getBackgroundColor();
-            tableCell.setBackgroundColor(currentBgColor ? null : '#ff0000');
+            tableCell.setBackgroundColor(color === 'none' ? null : `var(--table-bg-${color})`);
         });
     }, [editor]);
     return (React.createElement("div", { className: "toolbar" },
@@ -471,7 +470,8 @@ function ToolbarPlugin(props) {
                 editorConfig.toggles.font.display && (React.createElement(FontDropDown, { disabled: !isEditable, styleText: "font-family", value: fontFamily, editor: editor })),
             editorConfig.toggles.fontSize.enabled &&
                 editorConfig.toggles.fontSize.display && (React.createElement(FontDropDown, { disabled: !isEditable, styleText: "font-size", value: fontSize, editor: editor })),
-            editorConfig.toggles.font.display || editorConfig.toggles.fontSize.display && React.createElement(Divider, null),
+            editorConfig.toggles.font.display ||
+                (editorConfig.toggles.fontSize.display && React.createElement(Divider, null)),
             React.createElement("button", { type: "button", disabled: !isEditable, onClick: (event) => {
                     event.preventDefault();
                     activeEditor.dispatchCommand(lexical_1.FORMAT_TEXT_COMMAND, 'bold');
@@ -528,11 +528,25 @@ function ToolbarPlugin(props) {
             rootType === 'table' &&
                 editorConfig.toggles.tables.enabled &&
                 editorConfig.toggles.tables.display && (React.createElement(React.Fragment, null,
-                React.createElement(DropDown_1.default, { disabled: !isEditable, buttonClassName: "toolbar-item spaced", buttonLabel: "Table", buttonAriaLabel: "Open table toolkit", buttonIconClassName: "icon table-icon secondary" },
-                    React.createElement(DropDown_1.DropDownItem, { onClick: () => {
-                            toggleBackgroundColor();
-                        }, className: "item" },
-                        React.createElement("span", { className: "text" }, "TODO Table Stuff"))),
+                React.createElement(DropDown_1.default, { disabled: !isEditable, buttonClassName: "toolbar-item spaced", buttonAriaLabel: "Open table bg color", buttonIconClassName: "icon bg-color secondary" }, [
+                    { label: 'None', key: 'none' },
+                    { label: 'Red', key: 'red' },
+                    { label: 'Yellow', key: 'yellow' },
+                    { label: 'Orange', key: 'orange' },
+                    { label: 'Green', key: 'green' },
+                    { label: 'Blue', key: 'blue' },
+                ].map((color) => (React.createElement(DropDown_1.DropDownItem, { key: color.key, onClick: () => {
+                        setBackgroundColor(color.key);
+                    }, className: "item" },
+                    React.createElement("span", { className: "text", style: { alignItems: 'center', gap: 6 } },
+                        React.createElement("span", { style: {
+                                width: 16,
+                                height: 16,
+                                borderRadius: 8,
+                                backgroundColor: `var(--table-bg-${color.key})`,
+                                border: '1px solid #777'
+                            } }),
+                        color.label))))),
                 React.createElement(Divider, null))),
             React.createElement(DropDown_1.default, { disabled: !isEditable, buttonClassName: "toolbar-item spaced", buttonLabel: "Insert", buttonAriaLabel: "Insert specialized editor node", buttonIconClassName: "icon plus" },
                 editorConfig.toggles.upload.enabled &&

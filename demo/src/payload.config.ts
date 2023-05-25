@@ -11,6 +11,7 @@ import LexicalDebug from './collections/LexicalDebug';
 import Products from './collections/Products';
 import LexicalMinimal from './collections/LexicalMinimal';
 import LexicalBeforeChange from './collections/LexicalBeforeChange';
+import LexicalTable from './collections/LexicalTable';
 
 export default buildConfig({
   serverURL: 'http://localhost:3001',
@@ -40,6 +41,7 @@ export default buildConfig({
     },
   },
   collections: [
+    LexicalTable,
     Lexical,
     LexicalCustomized,
     LexicalMinimal,

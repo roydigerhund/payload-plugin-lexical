@@ -158,8 +158,10 @@ function TableActionMenu({ onClose, tableCellNode: _tableCellNode, setIsMenuOpen
         if (menuButtonElement != null && dropDownElement != null) {
             const menuButtonRect = menuButtonElement.getBoundingClientRect();
             dropDownElement.style.opacity = '1';
-            dropDownElement.style.left = `${menuButtonRect.left + menuButtonRect.width + window.pageXOffset + 5}px`;
-            dropDownElement.style.top = `${menuButtonRect.top + window.pageYOffset}px`;
+            dropDownElement.style.left = `${menuButtonRect.left + menuButtonRect.width + 4}px`;
+            dropDownElement.style.top = `${menuButtonRect.top}px`;
+            const viewportHeight = window.innerHeight;
+            dropDownElement.style.maxHeight = `${viewportHeight - menuButtonRect.top - 8}px`;
         }
     }, [contextRef, dropDownRef]);
     (0, react_1.useEffect)(() => {
@@ -271,22 +273,7 @@ function TableActionMenu({ onClose, tableCellNode: _tableCellNode, setIsMenuOpen
     }, [editor, onClose]);
     const toggleBackgroundColor = (0, react_1.useCallback)(() => {
         editor.update(() => {
-            const tableNode = (0, table_1.$getTableNodeFromLexicalNodeOrThrow)(tableCellNode);
-            const tableRowIndex = (0, table_1.$getTableRowIndexFromTableCellNode)(tableCellNode);
-            const tableColumnIndex = (0, table_1.$getTableColumnIndexFromTableCellNode)(tableCellNode);
-            const tableRows = tableNode.getChildren();
-            if (tableRowIndex >= tableRows.length || tableRowIndex < 0) {
-                throw new Error('Expected table cell to be inside of table row.');
-            }
-            const tableRow = tableRows[tableRowIndex];
-            if (!(0, table_1.$isTableRowNode)(tableRow)) {
-                throw new Error('Expected table row');
-            }
-            const tableCells = tableRow.getChildren();
-            if (tableColumnIndex >= tableCells.length || tableColumnIndex < 0) {
-                throw new Error('Expected table cell to be inside of table row.');
-            }
-            const tableCell = tableCells[tableColumnIndex];
+            const tableCell = tableCellNode;
             if (!(0, table_1.$isTableCellNode)(tableCell)) {
                 throw new Error('Expected table cell');
             }

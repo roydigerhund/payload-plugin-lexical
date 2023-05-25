@@ -204,12 +204,14 @@ function TableActionMenu({
       dropDownElement.style.opacity = '1';
 
       dropDownElement.style.left = `${
-        menuButtonRect.left + menuButtonRect.width + window.pageXOffset + 5
+        menuButtonRect.left + menuButtonRect.width + 4
       }px`;
 
-      dropDownElement.style.top = `${
-        menuButtonRect.top + window.pageYOffset
-      }px`;
+      dropDownElement.style.top = `${menuButtonRect.top}px`;
+
+      const viewportHeight = window.innerHeight;
+
+      dropDownElement.style.maxHeight = `${viewportHeight - menuButtonRect.top - 8}px`;
     }
   }, [contextRef, dropDownRef]);
 
@@ -359,7 +361,7 @@ function TableActionMenu({
 
       const currentBgColor = tableCell.getBackgroundColor();
 
-      tableCell.setBackgroundColor(currentBgColor ? null : '#ff0000');      
+      tableCell.setBackgroundColor(currentBgColor ? null : '#ff0000');
 
       clearTableSelection();
       onClose();
@@ -536,9 +538,7 @@ function TableActionMenu({
       </button>
       <hr />
       <button className="item" onClick={() => toggleBackgroundColor()}>
-        <span className="text">
-          Add Color to Cell
-        </span>
+        <span className="text">Add Color to Cell</span>
       </button>
       <hr />
       <button className="item" onClick={() => toggleTableRowIsHeader()}>
