@@ -371,6 +371,8 @@ function TableActionMenu({
 
   const toggleTableRowIsHeader = useCallback(() => {
     editor.update(() => {
+      const tableCell = tableCellNode;
+      const isRowHeader = (tableCell.__headerState & TableCellHeaderStates.ROW) === TableCellHeaderStates.ROW;
       const tableNode = $getTableNodeFromLexicalNodeOrThrow(tableCellNode);
 
       const tableRowIndex = $getTableRowIndexFromTableCellNode(tableCellNode);
@@ -392,7 +394,10 @@ function TableActionMenu({
           throw new Error('Expected table cell');
         }
 
-        tableCell.toggleHeaderStyle(TableCellHeaderStates.ROW);
+        // in binary, set row header bit to 1 if it's not already set, otherwise set it to 0
+        // keep other bits the same
+        const newHeaderStyle = isRowHeader ? tableCell.__headerState & ~TableCellHeaderStates.ROW : tableCell.__headerState | TableCellHeaderStates.ROW;
+        tableCell.setHeaderStyles(newHeaderStyle);
       });
 
       clearTableSelection();
@@ -402,6 +407,8 @@ function TableActionMenu({
 
   const toggleTableColumnIsHeader = useCallback(() => {
     editor.update(() => {
+      const tableCell = tableCellNode;
+      const isColumnHeader = (tableCell.__headerState & TableCellHeaderStates.COLUMN) === TableCellHeaderStates.COLUMN;
       const tableNode = $getTableNodeFromLexicalNodeOrThrow(tableCellNode);
 
       const tableColumnIndex =
@@ -428,7 +435,10 @@ function TableActionMenu({
           throw new Error('Expected table cell');
         }
 
-        tableCell.toggleHeaderStyle(TableCellHeaderStates.COLUMN);
+        // in binary, set column header bit to 1 if it's not already set, otherwise set it to 0
+        // keep other bits the same
+        const newHeaderStyle = isColumnHeader ? tableCell.__headerState & ~TableCellHeaderStates.COLUMN : tableCell.__headerState | TableCellHeaderStates.COLUMN;
+        tableCell.setHeaderStyles(newHeaderStyle);
       }
 
       clearTableSelection();

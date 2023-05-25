@@ -286,6 +286,8 @@ function TableActionMenu({ onClose, tableCellNode: _tableCellNode, setIsMenuOpen
     }, [editor, tableCellNode, clearTableSelection, onClose]);
     const toggleTableRowIsHeader = (0, react_1.useCallback)(() => {
         editor.update(() => {
+            const tableCell = tableCellNode;
+            const isRowHeader = (tableCell.__headerState & table_1.TableCellHeaderStates.ROW) === table_1.TableCellHeaderStates.ROW;
             const tableNode = (0, table_1.$getTableNodeFromLexicalNodeOrThrow)(tableCellNode);
             const tableRowIndex = (0, table_1.$getTableRowIndexFromTableCellNode)(tableCellNode);
             const tableRows = tableNode.getChildren();
@@ -300,7 +302,10 @@ function TableActionMenu({ onClose, tableCellNode: _tableCellNode, setIsMenuOpen
                 if (!(0, table_1.$isTableCellNode)(tableCell)) {
                     throw new Error('Expected table cell');
                 }
-                tableCell.toggleHeaderStyle(table_1.TableCellHeaderStates.ROW);
+                // in binary, set row header bit to 1 if it's not already set, otherwise set it to 0
+                // keep other bits the same
+                const newHeaderStyle = isRowHeader ? tableCell.__headerState & ~table_1.TableCellHeaderStates.ROW : tableCell.__headerState | table_1.TableCellHeaderStates.ROW;
+                tableCell.setHeaderStyles(newHeaderStyle);
             });
             clearTableSelection();
             onClose();
@@ -308,6 +313,8 @@ function TableActionMenu({ onClose, tableCellNode: _tableCellNode, setIsMenuOpen
     }, [editor, tableCellNode, clearTableSelection, onClose]);
     const toggleTableColumnIsHeader = (0, react_1.useCallback)(() => {
         editor.update(() => {
+            const tableCell = tableCellNode;
+            const isColumnHeader = (tableCell.__headerState & table_1.TableCellHeaderStates.COLUMN) === table_1.TableCellHeaderStates.COLUMN;
             const tableNode = (0, table_1.$getTableNodeFromLexicalNodeOrThrow)(tableCellNode);
             const tableColumnIndex = (0, table_1.$getTableColumnIndexFromTableCellNode)(tableCellNode);
             const tableRows = tableNode.getChildren();
@@ -324,7 +331,10 @@ function TableActionMenu({ onClose, tableCellNode: _tableCellNode, setIsMenuOpen
                 if (!(0, table_1.$isTableCellNode)(tableCell)) {
                     throw new Error('Expected table cell');
                 }
-                tableCell.toggleHeaderStyle(table_1.TableCellHeaderStates.COLUMN);
+                // in binary, set column header bit to 1 if it's not already set, otherwise set it to 0
+                // keep other bits the same
+                const newHeaderStyle = isColumnHeader ? tableCell.__headerState & ~table_1.TableCellHeaderStates.COLUMN : tableCell.__headerState | table_1.TableCellHeaderStates.COLUMN;
+                tableCell.setHeaderStyles(newHeaderStyle);
             }
             clearTableSelection();
             onClose();
