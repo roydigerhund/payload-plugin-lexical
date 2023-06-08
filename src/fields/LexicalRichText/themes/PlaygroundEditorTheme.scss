@@ -140,13 +140,18 @@
 }
 .PlaygroundEditorTheme__tableCell {
   border: 1px solid #bbb;
-  min-width: 75px;
+  min-width: 50px;
   vertical-align: top;
   text-align: start;
   padding: 6px 8px;
   position: relative;
   cursor: default;
   outline: none;
+}
+.PlaygroundEditorTheme__tableCell:before {
+  content: '';
+  display: block; 
+  width: 50px;
 }
 .PlaygroundEditorTheme__tableCellSortedIndicator {
   display: block;
