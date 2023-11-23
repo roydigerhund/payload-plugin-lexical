@@ -59,8 +59,7 @@ function TextFormatFloatingToolbar({ editor, anchorElem, isLink, isBold, isItali
     const insertLink = (0, react_1.useCallback)(() => {
         if (!isLink) {
             const linkAttributes = {
-                linkType: 'custom',
-                url: 'https://',
+                linkType: 'internal',
             };
             editor.dispatchCommand(LinkNodeModified_1.TOGGLE_LINK_COMMAND, linkAttributes);
             openModal(linkDrawerSlug);

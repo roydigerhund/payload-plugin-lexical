@@ -86,12 +86,7 @@ function LinkEditor({ editor, isLink, setIsLink, anchorElem, }) {
                         relationTo: ['articles', 'pages', 'categories'] });
                 }
                 return f;
-            }).filter(f => !('name' in f) || f.name !== 'newTab')].sort((a, b) => {
-            // if name === 'internal' then it should be first, otherwise keep the order
-            if ('name' in a && a.name === 'internal') {
-                return -1;
-            }
-        });
+            }).filter(f => !('name' in f) || f.name !== 'newTab')];
         if (customFieldSchema) {
             fields.push({
                 name: 'fields',

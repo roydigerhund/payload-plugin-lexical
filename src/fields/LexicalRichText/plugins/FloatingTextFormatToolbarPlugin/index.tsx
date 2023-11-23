@@ -77,8 +77,7 @@ function TextFormatFloatingToolbar({
   const insertLink = useCallback(() => {
     if (!isLink) {
       const linkAttributes: LinkAttributes = {
-        linkType: 'custom',
-        url: 'https://',
+        linkType: 'internal',
       };
       editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkAttributes);
       openModal(linkDrawerSlug);
