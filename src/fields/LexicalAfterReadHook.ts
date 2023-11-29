@@ -99,7 +99,9 @@ export async function traverseLexicalField(
       value: string;
       relationTo: string;
     } = node['attributes']['doc'];
-
+    if (!doc) {
+      return node;
+    }
     const foundDoc = await loadInternalLinkDocData(
       doc.value,
       doc.relationTo,

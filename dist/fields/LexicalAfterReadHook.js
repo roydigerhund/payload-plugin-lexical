@@ -80,6 +80,9 @@ function traverseLexicalField(node, locale) {
             node['attributes']['linkType'] &&
             node['attributes']['linkType'] === 'internal') {
             const doc = node['attributes']['doc'];
+            if (!doc) {
+                return node;
+            }
             const foundDoc = yield loadInternalLinkDocData(doc.value, doc.relationTo, locale);
             if (foundDoc) {
                 node['attributes']['doc']['data'] = foundDoc;
