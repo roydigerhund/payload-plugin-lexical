@@ -86,7 +86,7 @@ function LinkEditor({
         return  {
           ...f,
           // TODO make this configurable
-          relationTo: ['articles', 'pages', 'categories']
+          relationTo: ['articles', 'pages', 'categories', 'gurucards']
         } as Field;
       }
       return f;
