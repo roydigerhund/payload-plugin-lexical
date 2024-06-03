@@ -83,7 +83,7 @@ function LinkEditor({ editor, isLink, setIsLink, anchorElem, }) {
                 if ('name' in f && f.name === 'doc') {
                     return Object.assign(Object.assign({}, f), { 
                         // TODO make this configurable
-                        relationTo: ['articles', 'pages', 'categories', 'gurucards'] });
+                        relationTo: ['articles', 'pages', 'categories', 'posts', 'gurucards'] });
                 }
                 return f;
             }).filter(f => !('name' in f) || f.name !== 'newTab')];
