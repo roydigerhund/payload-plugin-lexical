@@ -20,11 +20,13 @@ function sanitizeUrl(url) {
 }
 exports.sanitizeUrl = sanitizeUrl;
 // Source: https://stackoverflow.com/a/8234912/2013580
-const urlRegExp = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)/);
+const urlRegExp = new RegExp(/^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)+[^\s]*$/i);
+const phoneNumberRegExp = new RegExp(/tel:[\+\(\)\-0-9]+/i);
+const emailRegExp = new RegExp(/mailto:[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i);
 function validateUrl(url) {
     // TODO Fix UI for link insertion; it should never default to an invalid URL such as https://.
     // Maybe show a dialog where they user can type the URL before inserting it.
-    return url === 'https://' || urlRegExp.test(url);
+    return url === 'https://' || urlRegExp.test(url) || phoneNumberRegExp.test(url) || emailRegExp.test(url);
 }
 exports.validateUrl = validateUrl;
 //# sourceMappingURL=url.js.map
