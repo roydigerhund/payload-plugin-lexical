@@ -43,6 +43,14 @@ export function LinkPlugin({ validateUrl }: Props): null {
 
           //validate
           if (linkAttributes?.linkType === 'custom') {
+            console.log('Validating URL:', linkAttributes?.url);
+            console.log('validateUrl:', validateUrl);
+            if (validateUrl) {
+              console.log(
+                'validateUrl(linkAttributes?.url):',
+                validateUrl(linkAttributes?.url),
+              );
+            }
             if (
               !(validateUrl === undefined || validateUrl(linkAttributes?.url))
             ) {

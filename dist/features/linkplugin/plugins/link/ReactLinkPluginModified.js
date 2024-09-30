@@ -24,6 +24,11 @@ function LinkPlugin({ validateUrl }) {
             let linkAttributes = payload;
             //validate
             if ((linkAttributes === null || linkAttributes === void 0 ? void 0 : linkAttributes.linkType) === 'custom') {
+                console.log('Validating URL:', linkAttributes === null || linkAttributes === void 0 ? void 0 : linkAttributes.url);
+                console.log('validateUrl:', validateUrl);
+                if (validateUrl) {
+                    console.log('validateUrl(linkAttributes?.url):', validateUrl(linkAttributes === null || linkAttributes === void 0 ? void 0 : linkAttributes.url));
+                }
                 if (!(validateUrl === undefined || validateUrl(linkAttributes === null || linkAttributes === void 0 ? void 0 : linkAttributes.url))) {
                     return false;
                 }
