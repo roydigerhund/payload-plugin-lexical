@@ -38,5 +38,17 @@ const emailRegExp = new RegExp(
 export function validateUrl(url: string): boolean {
   // TODO Fix UI for link insertion; it should never default to an invalid URL such as https://.
   // Maybe show a dialog where they user can type the URL before inserting it.
-  return url === 'https://' || urlRegExp.test(url) || phoneNumberRegExp.test(url) || emailRegExp.test(url);
+  if (urlRegExp.test(url)) {
+    console.log('URL is valid:', url);
+    return true;
+  }
+  if (phoneNumberRegExp.test(url)) {
+    console.log('Phone number is valid:', url);
+    return true;
+  }
+  if (emailRegExp.test(url)) {
+    console.log('Email is valid:', url);
+    return true;
+  }
+  return url === 'https://';
 }

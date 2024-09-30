@@ -26,7 +26,19 @@ const emailRegExp = new RegExp(/mailto:[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-
 function validateUrl(url) {
     // TODO Fix UI for link insertion; it should never default to an invalid URL such as https://.
     // Maybe show a dialog where they user can type the URL before inserting it.
-    return url === 'https://' || urlRegExp.test(url) || phoneNumberRegExp.test(url) || emailRegExp.test(url);
+    if (urlRegExp.test(url)) {
+        console.log('URL is valid:', url);
+        return true;
+    }
+    if (phoneNumberRegExp.test(url)) {
+        console.log('Phone number is valid:', url);
+        return true;
+    }
+    if (emailRegExp.test(url)) {
+        console.log('Email is valid:', url);
+        return true;
+    }
+    return url === 'https://';
 }
 exports.validateUrl = validateUrl;
 //# sourceMappingURL=url.js.map
